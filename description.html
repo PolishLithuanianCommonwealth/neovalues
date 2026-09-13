@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideology Description</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg" href="icon.svg">
+</head>
+<body>
+    <div class="main-container">
+        <img id="ideology-icon" src="" alt="" class="desc-icon">
+        <h1 id="ideology-title">Loading...</h1>
+
+        <div class="description-box">
+            <p id="ideology-description"></p>
+        </div>
+
+        <div class="button-container">
+            <button id="icon-source-btn" style="display: none;" onclick="openIconSource()">Original Icon Source</button>
+            <div id="original-work-sign" class="original-work-sign" style="display: none;">Original Work</div>
+            <button onclick="window.history.back()">Back</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get('id');
+        const category = urlParams.get('cat');
+        const type = urlParams.get('type');
+
+        const titleEl = document.getElementById('ideology-title');
+        const descEl = document.getElementById('ideology-description');
+        const iconEl = document.getElementById('ideology-icon');
+        const sourceBtn = document.getElementById('icon-source-btn');
+        const originalSign = document.getElementById('original-work-sign');
+
+        if (!itemId) {
+            titleEl.innerText = 'VALUE NOT FOUND';
+            descEl.innerText = 'No value ID was provided. Please go back and try again.';
+            iconEl.style.display = 'none';
+            sourceBtn.style.display = 'none';
+            originalSign.style.display = 'none';
+        } else if (type === 'ideology') {
+            titleEl.innerText = itemId.toUpperCase();
+            iconEl.style.display = 'none';
+            sourceBtn.style.display = 'none';
+            originalSign.style.display = 'none';
+            descEl.innerText = descriptions[itemId] || "Description coming soon!";
+        } 
+        else {
+            const prettyName = (resultsMapping[category] && resultsMapping[category][itemId]) 
+                                ? resultsMapping[category][itemId] 
+                                : itemId.replace(/_/g, ' ');
+            
+            titleEl.innerText = prettyName.toUpperCase();
+            iconEl.src = `icons/${category}/${itemId}.svg`;
+            descEl.innerText = descriptions[itemId] || "Description coming soon!";
+
+            if (iconSources[itemId] && iconSources[itemId] !== "") {
+                sourceBtn.style.display = 'block';
+                originalSign.style.display = 'none';
+            } else {
+                sourceBtn.style.display = 'none';
+                originalSign.style.display = 'block';
+            }
+        }
+
+        function openIconSource() {
+            const sourceUrl = iconSources[itemId];
+            if (sourceUrl) window.open(sourceUrl, '_blank');
+        }
+    </script>
+</body>
+</html>

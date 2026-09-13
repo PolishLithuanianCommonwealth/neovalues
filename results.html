@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoValues</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg" href="icon.svg">
+</head>
+<body>
+    <div class="main-container">
+    <div class="main-results-wrapper">
+        <div class="top-section">
+            <div class="title-container">
+                <h1>NeoValues</h1>
+                <span class="version-text">v1.4</span>
+            </div>
+            <div id="results-container"></div>
+        </div>
+        
+        <div class="bottom-section">
+            <div id="label"></div>
+            
+            <div id="secondary-label"></div>
+
+            <p class="intro-text results-instruction">
+                Click on any icon or label to view its description and original source.
+            </p>
+            
+            <div id="buttons" style="margin-top: 30px;">
+                <button onclick="location.href='index.html'">Back to menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const results = JSON.parse(localStorage.getItem('quizResults') || '{}');
+        const container = document.getElementById('results-container');
+        const userResults = Object.values(results);
+
+        categories.forEach(category => {
+            const resultValue = results[category];
+            if (resultValue) {
+                const wrapper = document.createElement('a');
+                wrapper.className = 'result-item';
+                wrapper.href = `description.html?id=${resultValue}&cat=${category}`;
+                wrapper.style.textDecoration = 'none';
+                wrapper.style.color = 'inherit';
+
+                const img = document.createElement('img');
+                img.src = `icons/${category}/${resultValue}.svg`; 
+                img.className = 'result-icon';
+
+                const name = document.createElement('p');
+                name.innerText = (resultsMapping[category][resultValue] || resultValue).replace(/_/g, ' ');
+                name.className = 'result-text';
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(name);
+                container.appendChild(wrapper);
+            }
+        });
+
+        const matchedKey = Object.keys(labelMapping).find(key => {
+            const requiredParts = key.split('|');
+            return requiredParts.every(part => userResults.includes(part));
+        });
+
+        const finalLabel = matchedKey ? labelMapping[matchedKey] : "No exact match";
+        const labelDiv = document.getElementById('label');
+        labelDiv.innerText = finalLabel;
+        labelDiv.innerHTML = `<a href="description.html?id=${encodeURIComponent(finalLabel)}&type=ideology" style="color: inherit; text-decoration: none; display: block;">${finalLabel}</a>`;
+        labelDiv.className = "label-bubble"; 
+        labelDiv.style.backgroundColor = labelColors[finalLabel] || "#7a7a7a";
+        const secondaryLabelDiv = document.getElementById('secondary-label');
+        
+        const scoredLabels = Object.keys(labelMapping)
+            .map(key => {
+                const requiredParts = key.split('|');
+                let score = 0;
+                let penalty = 0;
+
+                requiredParts.forEach(reqVal => {
+                    const category = Object.keys(resultsMapping).find(cat => resultsMapping[cat][reqVal]);
+                    const userVal = results[category];
+
+                    if (!userVal) return;
+
+                    const userGroup = Object.keys(subCategories[category] || {}).find(group => 
+                        subCategories[category][group].includes(userVal)
+                    );
+                    const reqGroup = Object.keys(subCategories[category] || {}).find(group => 
+                        subCategories[category][group].includes(reqVal)
+                    );
+
+                    if (userVal === reqVal) {
+                        score += 1.0;
+                    } 
+                    else if (userGroup && userGroup === reqGroup) {
+                        score += 0.5;
+                    }
+
+                    if (userGroup && reqGroup && incompatibleSubCategories[userGroup]?.includes(reqGroup)) {
+                        penalty = -100;
+                    }
+                });
+
+                return { key, label: labelMapping[key], score: score + penalty };
+            })
+            .sort((a, b) => b.score - a.score)
+            .filter(item => item.label !== finalLabel);
+
+        const uniqueScoredLabels = [];
+        const seenLabels = new Set();
+        for (const item of scoredLabels) {
+            if (!seenLabels.has(item.label)) {
+                seenLabels.add(item.label);
+                uniqueScoredLabels.push(item);
+            }
+        }
+
+        if (uniqueScoredLabels.length > 0) {
+            const nextMatch = uniqueScoredLabels[0];
+            secondaryLabelDiv.innerText = `Next closest match: ${nextMatch.label}`;
+            secondaryLabelDiv.innerHTML = `<a href="description.html?id=${encodeURIComponent(nextMatch.label)}&type=ideology" style="color: inherit; text-decoration: none; display: block;">Next closest match: ${nextMatch.label}</a>`;
+            secondaryLabelDiv.className = "label-bubble"; 
+            secondaryLabelDiv.style.display = "inline-block";
+            secondaryLabelDiv.style.borderColor = labelColors[nextMatch.label] || "#7a7a7a";
+            secondaryLabelDiv.style.color = labelColors[nextMatch.label] || "#7a7a7a";
+        } else {
+            secondaryLabelDiv.style.display = "none";
+        }
+    </script>
+    </div>
+</body>
+</html>
