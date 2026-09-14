@@ -391,7 +391,8 @@
             if (!ua) return { browser: 'Unknown', os: 'Unknown', device: 'Unknown' };
             
             let browser = 'Unknown';
-            if (ua.includes('Edg/')) browser = 'Edge';
+            if (ua.includes('SamsungBrowser/')) browser = 'Samsung Browser';
+            else if (ua.includes('Edg/')) browser = 'Edge';
             else if (ua.includes('OPR/') || ua.includes('Opera')) browser = 'Opera';
             else if (ua.includes('Chrome/') && !ua.includes('Edg/')) browser = 'Chrome';
             else if (ua.includes('Firefox/')) browser = 'Firefox';
