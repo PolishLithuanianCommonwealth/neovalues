@@ -140,7 +140,8 @@
                 body: JSON.stringify({
                     results: results,
                     matchedIdeology: finalLabel,
-                    nextClosest: uniqueScoredLabels.length > 0 ? uniqueScoredLabels[0].label : null
+                    nextClosest: uniqueScoredLabels.length > 0 ? uniqueScoredLabels[0].label : null,
+                    userName: localStorage.getItem('quizUserName') || null
                 })
             }).catch(() => {});
         } catch(e) {}

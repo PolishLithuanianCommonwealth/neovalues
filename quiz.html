@@ -9,12 +9,49 @@
 </head>
 <body>
     <div class="main-container">
-    <div class="question-container">
-    <h2 id="question"></h2>
-</div>
 
-<div id="buttons">
+    <!-- Name input screen -->
+    <div id="name-screen" class="question-container">
+        <h2>Enter your name to begin</h2>
     </div>
+    <div id="name-buttons">
+        <input type="text" id="name-input" placeholder="Your name" style="
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #e0e0e0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 280px;
+            text-align: center;
+            display: block;
+            margin: 0 auto 15px;
+        " onkeydown="if(event.key==='Enter') startQuiz()">
+        <button onclick="startQuiz()">Start</button>
+    </div>
+
+    <!-- Quiz screen (hidden until name entered) -->
+    <div class="question-container" style="display:none" id="quiz-screen">
+        <h2 id="question"></h2>
+    </div>
+    <div id="buttons" style="display:none">
+    </div>
+
+    <script>
+        function startQuiz() {
+            const name = document.getElementById('name-input').value.trim();
+            if (!name) {
+                document.getElementById('name-input').style.borderColor = '#e74c3c';
+                return;
+            }
+            localStorage.setItem('quizUserName', name);
+            document.getElementById('name-screen').style.display = 'none';
+            document.getElementById('name-buttons').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = '';
+            document.getElementById('buttons').style.display = '';
+            loadQuiz();
+        }
+    </script>
     <script src="quiz.js"></script>
     </div>
 </body>

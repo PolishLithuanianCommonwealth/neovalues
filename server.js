@@ -18,6 +18,7 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS submissions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     timestamp TEXT DEFAULT (datetime('now')),
+    name TEXT,
     economics TEXT,
     resource_management TEXT,
     culture TEXT,
@@ -31,9 +32,12 @@ db.exec(`
   )
 `);
 
+// Add name column if it doesn't exist (for existing DBs)
+try { db.exec('ALTER TABLE submissions ADD COLUMN name TEXT'); } catch(e) {}
+
 const insertStmt = db.prepare(`
-  INSERT INTO submissions (economics, resource_management, culture, authority, nation, foreign_policy, matched_ideology, next_closest, user_agent, ip)
-  VALUES (@economics, @resource_management, @culture, @authority, @nation, @foreign_policy, @matched_ideology, @next_closest, @user_agent, @ip)
+  INSERT INTO submissions (name, economics, resource_management, culture, authority, nation, foreign_policy, matched_ideology, next_closest, user_agent, ip)
+  VALUES (@name, @economics, @resource_management, @culture, @authority, @nation, @foreign_policy, @matched_ideology, @next_closest, @user_agent, @ip)
 `);
 
 const getAllStmt = db.prepare('SELECT * FROM submissions ORDER BY id DESC');
@@ -46,9 +50,10 @@ app.use(express.static(path.join(__dirname), { extensions: ['html'] }));
 // --- API: Submit Results ---
 app.post('/api/submit', (req, res) => {
   try {
-    const { results, matchedIdeology, nextClosest } = req.body;
+    const { results, matchedIdeology, nextClosest, userName } = req.body;
     
     insertStmt.run({
+      name: userName || null,
       economics: results.economics || null,
       resource_management: results.resource_management || null,
       culture: results.culture || null,

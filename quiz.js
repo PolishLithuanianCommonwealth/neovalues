@@ -4,12 +4,14 @@ let currentCategoryIndex = 0;
 let currentQuestions = {};
 let results = {};
 
-fetch('questions_tree.json')
-  .then(res => res.json())
-  .then(data => {
-    questionsByCategory = data;
-    startCategory(categoryOrder[currentCategoryIndex]);
-  });
+function loadQuiz() {
+  fetch('questions_tree.json')
+    .then(res => res.json())
+    .then(data => {
+      questionsByCategory = data;
+      startCategory(categoryOrder[currentCategoryIndex]);
+    });
+}
 
 function startCategory(category) {
   currentQuestions = {};
