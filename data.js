@@ -270,7 +270,7 @@ const labelMapping = {
     "welfare_capitalism|conservative_liberalism|representative_democracy|civic_nationalism|Globalism": "Compassionate Conservatism",
 
     /* Marxist ideologies */
-    "communization|collective_distribution|social_progressivism|proletarian_internationalism": "Italian Left Communism",
+    "communization|collective_distribution|social_progressivism|partocracy|proletarian_internationalism": "Italian Left Communism",
     "state_capitalism|collective_distribution|conservatism|partocracy|cultural_nationalism|Isolationism": "Juche",
     "agrarian_socialism|collective_distribution|social_progressivism|partocracy|cultural_nationalism|Realpolitik": "Mao Zedong Thought",
     "agrarian_socialism|collective_distribution|social_progressivism|partocracy|pan_nationalism|Interventionism": "Maoism–Third Worldism",
