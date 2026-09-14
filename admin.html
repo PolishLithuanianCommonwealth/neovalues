@@ -419,8 +419,12 @@
         function populateStats(data) {
             document.getElementById('total-count').textContent = data.count;
 
-            const today = new Date().toISOString().split('T')[0];
-            const todayCount = allData.filter(s => s.timestamp && s.timestamp.startsWith(today)).length;
+            const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+            const todayCount = allData.filter(s => {
+                if (!s.timestamp) return false;
+                const d = new Date(s.timestamp + 'Z');
+                return d.toLocaleDateString('en-CA', { timeZone: 'America/New_York' }) === today;
+            }).length;
             document.getElementById('today-count').textContent = todayCount;
 
             const ideologyCounts = {};
@@ -507,7 +511,7 @@
                 tr.innerHTML = `
                     <td>${s.id}</td>
                     <td style="color:#d4a574;font-weight:bold">${s.name || '<span style="color:#555">—</span>'}</td>
-                    <td>${s.timestamp || '-'}</td>
+                    <td>${toEST(s.timestamp)}</td>
                     <td><span class="result-tag">${fmt(s.economics)}</span></td>
                     <td><span class="result-tag">${fmt(s.resource_management)}</span></td>
                     <td><span class="result-tag">${fmt(s.culture)}</span></td>
@@ -525,6 +529,12 @@
             return val ? val.replace(/_/g, ' ') : '-';
         }
 
+        function toEST(ts) {
+            if (!ts) return '-';
+            const d = new Date(ts + 'Z');
+            return d.toLocaleString('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        }
+
         // --- Modal ---
         function openModal(s) {
             const modal = document.getElementById('detail-modal');
@@ -534,7 +544,7 @@
             const whoDiv = document.getElementById('modal-who');
             const timeDiv = document.getElementById('modal-time');
 
-            timeDiv.textContent = s.timestamp || '';
+            timeDiv.textContent = toEST(s.timestamp);
 
             // Build icons like the real results page
             iconsDiv.innerHTML = '';
