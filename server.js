@@ -37,7 +37,7 @@ const getCountStmt = db.prepare('SELECT COUNT(*) as count FROM submissions');
 
 // --- Middleware ---
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname), { extensions: ['html'] }));
 
 // --- API: Submit Results ---
 app.post('/api/submit', (req, res) => {
