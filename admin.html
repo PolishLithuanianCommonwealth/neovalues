@@ -71,7 +71,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .results-table tr:hover td { background: #1e1e1e; }
+        .results-table tr:hover td { background: #1e1e1e; cursor: pointer; }
         .results-table .ideology-cell {
             color: #fff;
             font-weight: bold;
@@ -96,7 +96,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        .filter-bar select {
+        .filter-bar select, .filter-bar button {
             background: #2a2a2a;
             border: 1px solid #444;
             color: #e0e0e0;
@@ -105,6 +105,124 @@
             font-size: 13px;
         }
         .filter-bar select:focus { outline: none; border-color: #888; }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: #fff; }
+
+        .modal-icons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        .modal-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            width: 110px;
+        }
+        .modal-icon-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 8px;
+        }
+        .modal-icon-item p {
+            font-size: 11px;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ccc;
+            line-height: 1.3;
+            margin: 0;
+        }
+
+        .modal-ideology {
+            text-align: center;
+            margin: 20px 0 10px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .modal-next-closest {
+            text-align: center;
+            margin: 8px 0 20px;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            border: 1px solid;
+            display: inline-block;
+        }
+        .modal-center { text-align: center; }
+
+        .modal-who {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        .who-row {
+            display: flex;
+            gap: 10px;
+            margin: 6px 0;
+            font-size: 13px;
+        }
+        .who-label {
+            color: #666;
+            min-width: 80px;
+            text-transform: uppercase;
+            font-size: 11px;
+            padding-top: 1px;
+        }
+        .who-value { color: #aaa; }
+        .who-device {
+            background: #2a2a2a;
+            padding: 4px 10px;
+            border-radius: 5px;
+            color: #ddd;
+            font-size: 13px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        .modal-time {
+            color: #555;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -165,7 +283,7 @@
                             <th>Nation</th>
                             <th>Foreign</th>
                             <th>Ideology</th>
-                            <th>Next Closest</th>
+                            <th>Who?</th>
                         </tr>
                     </thead>
                     <tbody id="table-body"></tbody>
@@ -174,9 +292,40 @@
         </div>
     </div>
 
+    <!-- Result Detail Modal -->
+    <div class="modal-overlay" id="detail-modal" onclick="if(event.target===this)closeModal()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="title-container" style="margin-bottom:0">
+                <h1 style="font-size:24px">NeoValues</h1>
+                <span class="version-text">v1.4</span>
+            </div>
+            <div class="modal-time" id="modal-time"></div>
+            <div class="modal-icons" id="modal-icons"></div>
+            <div class="modal-center">
+                <div class="modal-ideology" id="modal-ideology"></div>
+            </div>
+            <div class="modal-center">
+                <div class="modal-next-closest" id="modal-next-closest"></div>
+            </div>
+            <div class="modal-who" id="modal-who"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
     <script>
         let allData = [];
         let currentPw = '';
+
+        const categoryKeys = ['economics', 'resource_management', 'culture', 'authority', 'nation', 'foreign_policy'];
+        const categoryLabels = {
+            economics: 'economics',
+            resource_management: 'resource_management',
+            culture: 'culture',
+            authority: 'authority',
+            nation: 'nation',
+            foreign_policy: 'foreign'
+        };
 
         async function doLogin() {
             const pw = document.getElementById('pw-input').value;
@@ -238,6 +387,38 @@
             });
         }
 
+        function parseUA(ua) {
+            if (!ua) return { browser: 'Unknown', os: 'Unknown', device: 'Unknown' };
+            
+            let browser = 'Unknown';
+            if (ua.includes('Edg/')) browser = 'Edge';
+            else if (ua.includes('OPR/') || ua.includes('Opera')) browser = 'Opera';
+            else if (ua.includes('Chrome/') && !ua.includes('Edg/')) browser = 'Chrome';
+            else if (ua.includes('Firefox/')) browser = 'Firefox';
+            else if (ua.includes('Safari/') && !ua.includes('Chrome')) browser = 'Safari';
+
+            let os = 'Unknown';
+            if (ua.includes('Windows')) os = 'Windows';
+            else if (ua.includes('Mac OS X') || ua.includes('Macintosh')) os = 'macOS';
+            else if (ua.includes('Android')) os = 'Android';
+            else if (ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
+            else if (ua.includes('Linux')) os = 'Linux';
+            else if (ua.includes('CrOS')) os = 'ChromeOS';
+
+            let device = 'Desktop';
+            if (ua.includes('iPhone')) device = 'iPhone';
+            else if (ua.includes('iPad')) device = 'iPad';
+            else if (ua.includes('Android') && ua.includes('Mobile')) device = 'Android Phone';
+            else if (ua.includes('Android')) device = 'Android Tablet';
+
+            return { browser, os, device };
+        }
+
+        function shortWho(s) {
+            const info = parseUA(s.user_agent);
+            return `${info.device} · ${info.browser}`;
+        }
+
         function renderTable() {
             const fIdeology = document.getElementById('filter-ideology').value;
             const fEcon = document.getElementById('filter-econ').value;
@@ -251,8 +432,9 @@
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
 
-            filtered.forEach((s, i) => {
+            filtered.forEach((s) => {
                 const tr = document.createElement('tr');
+                tr.onclick = () => openModal(s);
                 tr.innerHTML = `
                     <td>${s.id}</td>
                     <td>${s.timestamp || '-'}</td>
@@ -263,7 +445,7 @@
                     <td><span class="result-tag">${fmt(s.nation)}</span></td>
                     <td><span class="result-tag">${fmt(s.foreign_policy)}</span></td>
                     <td class="ideology-cell">${s.matched_ideology || '-'}</td>
-                    <td>${s.next_closest || '-'}</td>
+                    <td style="color:#777;font-size:12px">${shortWho(s)}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -273,8 +455,103 @@
             return val ? val.replace(/_/g, ' ') : '-';
         }
 
+        // --- Modal ---
+        function openModal(s) {
+            const modal = document.getElementById('detail-modal');
+            const iconsDiv = document.getElementById('modal-icons');
+            const ideologyDiv = document.getElementById('modal-ideology');
+            const nextDiv = document.getElementById('modal-next-closest');
+            const whoDiv = document.getElementById('modal-who');
+            const timeDiv = document.getElementById('modal-time');
+
+            timeDiv.textContent = s.timestamp || '';
+
+            // Build icons like the real results page
+            iconsDiv.innerHTML = '';
+            const resultMap = {
+                economics: s.economics,
+                resource_management: s.resource_management,
+                culture: s.culture,
+                authority: s.authority,
+                nation: s.nation,
+                foreign: s.foreign_policy
+            };
+
+            categories.forEach(cat => {
+                const val = resultMap[cat];
+                if (!val) return;
+
+                const item = document.createElement('div');
+                item.className = 'modal-icon-item';
+
+                const img = document.createElement('img');
+                img.src = `icons/${cat}/${val}.svg`;
+                img.onerror = () => { img.style.display = 'none'; };
+
+                const name = document.createElement('p');
+                const displayName = (resultsMapping[cat] && resultsMapping[cat][val]) 
+                    ? resultsMapping[cat][val] 
+                    : val;
+                name.textContent = displayName.replace(/_/g, ' ');
+
+                item.appendChild(img);
+                item.appendChild(name);
+                iconsDiv.appendChild(item);
+            });
+
+            // Ideology label
+            const ideology = s.matched_ideology || 'No exact match';
+            ideologyDiv.textContent = ideology;
+            ideologyDiv.style.backgroundColor = (typeof labelColors !== 'undefined' && labelColors[ideology]) || '#7a7a7a';
+            ideologyDiv.style.color = '#fff';
+
+            // Next closest
+            if (s.next_closest) {
+                nextDiv.textContent = `Next closest: ${s.next_closest}`;
+                nextDiv.style.borderColor = (typeof labelColors !== 'undefined' && labelColors[s.next_closest]) || '#7a7a7a';
+                nextDiv.style.color = (typeof labelColors !== 'undefined' && labelColors[s.next_closest]) || '#7a7a7a';
+                nextDiv.style.display = 'inline-block';
+            } else {
+                nextDiv.style.display = 'none';
+            }
+
+            // Who section
+            const info = parseUA(s.user_agent);
+            whoDiv.innerHTML = `
+                <div style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Who could this be?</div>
+                <div class="who-row">
+                    <span class="who-label">Device</span>
+                    <span class="who-device">${info.device}</span>
+                </div>
+                <div class="who-row">
+                    <span class="who-label">Browser</span>
+                    <span class="who-value">${info.browser} on ${info.os}</span>
+                </div>
+                <div class="who-row">
+                    <span class="who-label">IP</span>
+                    <span class="who-value" style="font-family:monospace">${s.ip || 'unknown'}</span>
+                </div>
+                <div class="who-row">
+                    <span class="who-label">Full UA</span>
+                    <span class="who-value" style="font-size:11px;color:#555;word-break:break-all;white-space:normal">${s.user_agent || 'unknown'}</span>
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+
         function exportCSV() {
-            const headers = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','matched_ideology','next_closest'];
+            const headers = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','matched_ideology','next_closest','ip','user_agent'];
             const rows = allData.map(s => headers.map(h => `"${(s[h]||'').toString().replace(/"/g,'""')}"`).join(','));
             const csv = [headers.join(','), ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv' });
