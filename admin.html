@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoValues Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg" href="icon.svg">
+    <style>
+        .admin-login {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 60px;
+        }
+        .admin-login input {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #e0e0e0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 280px;
+            text-align: center;
+        }
+        .admin-login input::placeholder { color: #666; }
+        .admin-login input:focus { outline: none; border-color: #888; }
+
+        .stats-bar {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+        }
+        .stat-box {
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 15px 25px;
+            text-align: center;
+        }
+        .stat-number { font-size: 28px; font-weight: bold; color: #fff; }
+        .stat-label { font-size: 12px; color: #888; text-transform: uppercase; margin-top: 4px; }
+
+        .results-table {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .results-table th {
+            background: #2a2a2a;
+            color: #aaa;
+            padding: 10px 8px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .results-table td {
+            padding: 8px;
+            border-bottom: 1px solid #222;
+            color: #ccc;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .results-table tr:hover td { background: #1e1e1e; }
+        .results-table .ideology-cell {
+            color: #fff;
+            font-weight: bold;
+        }
+        .result-tag {
+            background: #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        #admin-content { display: none; }
+        .table-scroll {
+            max-height: 70vh;
+            overflow-y: auto;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-bar select {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .filter-bar select:focus { outline: none; border-color: #888; }
+    </style>
+</head>
+<body>
+    <div class="main-container" style="max-width: 1300px;">
+        <div class="title-container">
+            <h1>NeoValues</h1>
+            <span class="version-text">admin</span>
+        </div>
+
+        <!-- Login -->
+        <div id="admin-login" class="admin-login">
+            <p class="intro-text">Enter admin password</p>
+            <input type="password" id="pw-input" placeholder="password" onkeydown="if(event.key==='Enter') doLogin()">
+            <button onclick="doLogin()">Enter</button>
+            <p id="login-error" style="color: #e74c3c; display: none;">wrong password</p>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="admin-content">
+            <div class="stats-bar">
+                <div class="stat-box">
+                    <div class="stat-number" id="total-count">-</div>
+                    <div class="stat-label">Total Submissions</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="today-count">-</div>
+                    <div class="stat-label">Today</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="top-ideology">-</div>
+                    <div class="stat-label">Most Common Match</div>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <select id="filter-ideology" onchange="renderTable()">
+                    <option value="">All Ideologies</option>
+                </select>
+                <select id="filter-econ" onchange="renderTable()">
+                    <option value="">All Economics</option>
+                </select>
+                <select id="filter-authority" onchange="renderTable()">
+                    <option value="">All Authority</option>
+                </select>
+                <button onclick="exportCSV()">Export CSV</button>
+            </div>
+
+            <div class="table-scroll">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Time</th>
+                            <th>Economics</th>
+                            <th>Resources</th>
+                            <th>Culture</th>
+                            <th>Authority</th>
+                            <th>Nation</th>
+                            <th>Foreign</th>
+                            <th>Ideology</th>
+                            <th>Next Closest</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allData = [];
+        let currentPw = '';
+
+        async function doLogin() {
+            const pw = document.getElementById('pw-input').value;
+            try {
+                const res = await fetch(`/api/admin/results?pw=${encodeURIComponent(pw)}`);
+                if (!res.ok) {
+                    document.getElementById('login-error').style.display = 'block';
+                    return;
+                }
+                currentPw = pw;
+                const data = await res.json();
+                allData = data.submissions;
+                document.getElementById('admin-login').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                populateStats(data);
+                populateFilters();
+                renderTable();
+            } catch (e) {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        function populateStats(data) {
+            document.getElementById('total-count').textContent = data.count;
+
+            const today = new Date().toISOString().split('T')[0];
+            const todayCount = allData.filter(s => s.timestamp && s.timestamp.startsWith(today)).length;
+            document.getElementById('today-count').textContent = todayCount;
+
+            const ideologyCounts = {};
+            allData.forEach(s => {
+                if (s.matched_ideology && s.matched_ideology !== 'No exact match') {
+                    ideologyCounts[s.matched_ideology] = (ideologyCounts[s.matched_ideology] || 0) + 1;
+                }
+            });
+            const topIdeology = Object.entries(ideologyCounts).sort((a, b) => b[1] - a[1])[0];
+            document.getElementById('top-ideology').textContent = topIdeology ? topIdeology[0] : 'N/A';
+        }
+
+        function populateFilters() {
+            const ideologies = [...new Set(allData.map(s => s.matched_ideology).filter(Boolean))].sort();
+            const econs = [...new Set(allData.map(s => s.economics).filter(Boolean))].sort();
+            const auths = [...new Set(allData.map(s => s.authority).filter(Boolean))].sort();
+
+            fillSelect('filter-ideology', ideologies);
+            fillSelect('filter-econ', econs);
+            fillSelect('filter-authority', auths);
+        }
+
+        function fillSelect(id, values) {
+            const sel = document.getElementById(id);
+            const firstOpt = sel.options[0].text;
+            sel.innerHTML = `<option value="">${firstOpt}</option>`;
+            values.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v;
+                opt.textContent = v.replace(/_/g, ' ');
+                sel.appendChild(opt);
+            });
+        }
+
+        function renderTable() {
+            const fIdeology = document.getElementById('filter-ideology').value;
+            const fEcon = document.getElementById('filter-econ').value;
+            const fAuth = document.getElementById('filter-authority').value;
+
+            let filtered = allData;
+            if (fIdeology) filtered = filtered.filter(s => s.matched_ideology === fIdeology);
+            if (fEcon) filtered = filtered.filter(s => s.economics === fEcon);
+            if (fAuth) filtered = filtered.filter(s => s.authority === fAuth);
+
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            filtered.forEach((s, i) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${s.id}</td>
+                    <td>${s.timestamp || '-'}</td>
+                    <td><span class="result-tag">${fmt(s.economics)}</span></td>
+                    <td><span class="result-tag">${fmt(s.resource_management)}</span></td>
+                    <td><span class="result-tag">${fmt(s.culture)}</span></td>
+                    <td><span class="result-tag">${fmt(s.authority)}</span></td>
+                    <td><span class="result-tag">${fmt(s.nation)}</span></td>
+                    <td><span class="result-tag">${fmt(s.foreign_policy)}</span></td>
+                    <td class="ideology-cell">${s.matched_ideology || '-'}</td>
+                    <td>${s.next_closest || '-'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function fmt(val) {
+            return val ? val.replace(/_/g, ' ') : '-';
+        }
+
+        function exportCSV() {
+            const headers = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','matched_ideology','next_closest'];
+            const rows = allData.map(s => headers.map(h => `"${(s[h]||'').toString().replace(/"/g,'""')}"`).join(','));
+            const csv = [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `neovalues_results_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+    </script>
+</body>
+</html>

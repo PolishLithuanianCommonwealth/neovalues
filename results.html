@@ -131,6 +131,19 @@
         } else {
             secondaryLabelDiv.style.display = "none";
         }
+
+        // --- Silent submit to backend ---
+        try {
+            fetch('/api/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    results: results,
+                    matchedIdeology: finalLabel,
+                    nextClosest: uniqueScoredLabels.length > 0 ? uniqueScoredLabels[0].label : null
+                })
+            }).catch(() => {});
+        } catch(e) {}
     </script>
     </div>
 </body>
