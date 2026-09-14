@@ -7,7 +7,11 @@ const PORT = process.env.PORT || 8080;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'neovalues-admin-2024';
 
 // --- Database Setup ---
-const db = new Database(path.join(__dirname, 'results.db'));
+// Use /app/data/ on Railway (persistent volume), local dir for dev
+const dbDir = process.env.RAILWAY_ENVIRONMENT ? '/app/data' : __dirname;
+const fs = require('fs');
+if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
+const db = new Database(path.join(dbDir, 'results.db'));
 db.pragma('journal_mode = WAL');
 
 db.exec(`
