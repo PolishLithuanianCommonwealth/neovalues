@@ -317,15 +317,81 @@
         let allData = [];
         let currentPw = '';
 
-        const categoryKeys = ['economics', 'resource_management', 'culture', 'authority', 'nation', 'foreign_policy'];
-        const categoryLabels = {
-            economics: 'economics',
-            resource_management: 'resource_management',
-            culture: 'culture',
-            authority: 'authority',
-            nation: 'nation',
-            foreign_policy: 'foreign'
-        };
+        // --- Dynamically recompute ideology from current data.js mappings ---
+        // Mirrors the exact logic from results.html so labels always stay current
+        function computeIdeology(s) {
+            const results = {
+                economics: s.economics,
+                resource_management: s.resource_management,
+                culture: s.culture,
+                authority: s.authority,
+                nation: s.nation,
+                foreign: s.foreign_policy
+            };
+            const userResults = Object.values(results);
+
+            // Exact match
+            const matchedKey = Object.keys(labelMapping).find(key => {
+                const requiredParts = key.split('|');
+                return requiredParts.every(part => userResults.includes(part));
+            });
+            const finalLabel = matchedKey ? labelMapping[matchedKey] : "No exact match";
+
+            // Scored next-closest
+            const scoredLabels = Object.keys(labelMapping)
+                .map(key => {
+                    const requiredParts = key.split('|');
+                    let score = 0;
+                    let penalty = 0;
+
+                    requiredParts.forEach(reqVal => {
+                        const category = Object.keys(resultsMapping).find(cat => resultsMapping[cat][reqVal]);
+                        const userVal = results[category];
+                        if (!userVal) return;
+
+                        const userGroup = Object.keys(subCategories[category] || {}).find(group =>
+                            subCategories[category][group].includes(userVal)
+                        );
+                        const reqGroup = Object.keys(subCategories[category] || {}).find(group =>
+                            subCategories[category][group].includes(reqVal)
+                        );
+
+                        if (userVal === reqVal) score += 1.0;
+                        else if (userGroup && userGroup === reqGroup) score += 0.5;
+
+                        if (userGroup && reqGroup && incompatibleSubCategories[userGroup]?.includes(reqGroup)) {
+                            penalty = -100;
+                        }
+                    });
+
+                    return { key, label: labelMapping[key], score: score + penalty };
+                })
+                .sort((a, b) => b.score - a.score)
+                .filter(item => item.label !== finalLabel);
+
+            const uniqueScoredLabels = [];
+            const seenLabels = new Set();
+            for (const item of scoredLabels) {
+                if (!seenLabels.has(item.label)) {
+                    seenLabels.add(item.label);
+                    uniqueScoredLabels.push(item);
+                }
+            }
+
+            return {
+                ideology: finalLabel,
+                nextClosest: uniqueScoredLabels.length > 0 ? uniqueScoredLabels[0].label : null
+            };
+        }
+
+        // Enrich each submission with live-computed ideology
+        function enrichData() {
+            allData.forEach(s => {
+                const computed = computeIdeology(s);
+                s._ideology = computed.ideology;
+                s._nextClosest = computed.nextClosest;
+            });
+        }
 
         async function doLogin() {
             const pw = document.getElementById('pw-input').value;
@@ -338,6 +404,7 @@
                 currentPw = pw;
                 const data = await res.json();
                 allData = data.submissions;
+                enrichData();
                 document.getElementById('admin-login').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 populateStats(data);
@@ -357,8 +424,8 @@
 
             const ideologyCounts = {};
             allData.forEach(s => {
-                if (s.matched_ideology && s.matched_ideology !== 'No exact match') {
-                    ideologyCounts[s.matched_ideology] = (ideologyCounts[s.matched_ideology] || 0) + 1;
+                if (s._ideology && s._ideology !== 'No exact match') {
+                    ideologyCounts[s._ideology] = (ideologyCounts[s._ideology] || 0) + 1;
                 }
             });
             const topIdeology = Object.entries(ideologyCounts).sort((a, b) => b[1] - a[1])[0];
@@ -366,7 +433,7 @@
         }
 
         function populateFilters() {
-            const ideologies = [...new Set(allData.map(s => s.matched_ideology).filter(Boolean))].sort();
+            const ideologies = [...new Set(allData.map(s => s._ideology).filter(Boolean))].sort();
             const econs = [...new Set(allData.map(s => s.economics).filter(Boolean))].sort();
             const auths = [...new Set(allData.map(s => s.authority).filter(Boolean))].sort();
 
@@ -426,7 +493,7 @@
             const fAuth = document.getElementById('filter-authority').value;
 
             let filtered = allData;
-            if (fIdeology) filtered = filtered.filter(s => s.matched_ideology === fIdeology);
+            if (fIdeology) filtered = filtered.filter(s => s._ideology === fIdeology);
             if (fEcon) filtered = filtered.filter(s => s.economics === fEcon);
             if (fAuth) filtered = filtered.filter(s => s.authority === fAuth);
 
@@ -445,7 +512,7 @@
                     <td><span class="result-tag">${fmt(s.authority)}</span></td>
                     <td><span class="result-tag">${fmt(s.nation)}</span></td>
                     <td><span class="result-tag">${fmt(s.foreign_policy)}</span></td>
-                    <td class="ideology-cell">${s.matched_ideology || '-'}</td>
+                    <td class="ideology-cell">${s._ideology || '-'}</td>
                     <td style="color:#777;font-size:12px">${shortWho(s)}</td>
                 `;
                 tbody.appendChild(tr);
@@ -500,17 +567,17 @@
                 iconsDiv.appendChild(item);
             });
 
-            // Ideology label
-            const ideology = s.matched_ideology || 'No exact match';
+            // Use live-computed ideology
+            const ideology = s._ideology || 'No exact match';
             ideologyDiv.textContent = ideology;
             ideologyDiv.style.backgroundColor = (typeof labelColors !== 'undefined' && labelColors[ideology]) || '#7a7a7a';
             ideologyDiv.style.color = '#fff';
 
-            // Next closest
-            if (s.next_closest) {
-                nextDiv.textContent = `Next closest: ${s.next_closest}`;
-                nextDiv.style.borderColor = (typeof labelColors !== 'undefined' && labelColors[s.next_closest]) || '#7a7a7a';
-                nextDiv.style.color = (typeof labelColors !== 'undefined' && labelColors[s.next_closest]) || '#7a7a7a';
+            // Live-computed next closest
+            if (s._nextClosest) {
+                nextDiv.textContent = `Next closest: ${s._nextClosest}`;
+                nextDiv.style.borderColor = (typeof labelColors !== 'undefined' && labelColors[s._nextClosest]) || '#7a7a7a';
+                nextDiv.style.color = (typeof labelColors !== 'undefined' && labelColors[s._nextClosest]) || '#7a7a7a';
                 nextDiv.style.display = 'inline-block';
             } else {
                 nextDiv.style.display = 'none';
@@ -552,9 +619,10 @@
         });
 
         function exportCSV() {
-            const headers = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','matched_ideology','next_closest','ip','user_agent'];
+            const headers = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','_ideology','_nextClosest','ip','user_agent'];
+            const headerNames = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','matched_ideology','next_closest','ip','user_agent'];
             const rows = allData.map(s => headers.map(h => `"${(s[h]||'').toString().replace(/"/g,'""')}"`).join(','));
-            const csv = [headers.join(','), ...rows].join('\n');
+            const csv = [headerNames.join(','), ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
