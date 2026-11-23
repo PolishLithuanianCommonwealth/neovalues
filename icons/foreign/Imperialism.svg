@@ -64,7 +64,7 @@
          in="fbSourceGraphic" /></filter><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath9423"><circle
-         style="fill:#427328;fill-opacity:0;stroke:#000000;stroke-width:5.29167;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         style="fill:none;stroke:#000000;stroke-width:5.29167;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="circle9425"
          cx="132.29167"
          cy="132.29167"
@@ -77,7 +77,7 @@
        r="125.37917"
        cy="132.29167"
        cx="132.29167" /><circle
-       style="fill:#427328;fill-opacity:0;stroke:#ffffff;stroke-width:5.29167;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       style="fill:none;stroke:#ffffff;stroke-width:5.29167;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        id="circle9421"
        cx="132.29167"
        cy="132.29167"

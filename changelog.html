@@ -6,10 +6,173 @@
     <title>NeoValues</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg" href="icon.svg">
+    <script src="theme.js"></script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
 </head>
 <body>
     <div class="main-container">
-        <h1>Updates & Changelog</h1>
+        <h1 data-i18n="changelogTitle">Changelog</h1>
+
+        <div class="description-box">
+            <h3>4.3 - 23.11.2026</h3>
+            <ul>
+                <li>Added the following values: Council Planning, Labor-Time Vouchers, Proletarian Internationalism</li>
+                <li>Added the following ideologies: Communization, Situationism, Autonomist Marxism, Orthodox Marxism, Participatory Socialism</li>
+                <li>Replaced icon for: Communization</li>
+                <li>Reworked question paths and ideological definitions across Council Communism, Italian Left Communism, Luxemburgism, Trotskyism, Marxism-Leninism, Anarcho-Communism, Ego-Communism, and Post-left</li>
+                <li>Added specificity tie-breaking to exact ideology matching</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>4.2 - 16.11.2026</h3>
+            <ul>
+                <li>Added localisation for Spanish</li>
+                <li>Changed ideology data structure</li>
+                <li>Added the following ideologies: Yarvinism, Landianism</li>
+                <li>Removed the following ideologies: Dark Enlightenment</li>
+                <li>Added the following values: Cybernetic Socialism, Anti-Organizationalism, Regressive Taxation, Patchwork, State Enterprise Revenue, Oligarchy, Ghent System, Semi-Constitutional Monarchy, Ochlocracy</li>
+                <li>Replaced icons for: Confiscatory Taxation, Polycentrism, Cameralism, Mixed Land Tax, Collective Distribution, Paleoconservatism, Stratocracy, Conservatism, Aristocracy, Legal Moralism, Minarchism</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>4.1 - 15.11.2026</h3>
+            <ul>
+                <li>Added localisation for German</li>
+                <li>Added custom results page</li>
+                <li>Added the following ideologies: Agorism, Revolutionary Nationalism</li>
+                <li>Fixed match combinations for National Syndicalism, Integralism and Syndicalist Republicanism</li>
+                <li>Added link to discord server</li>
+                <li>Updated language interface</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>4.0 - 14.11.2026</h3>
+            <ul>
+                <li>Added localisation for Ukrainian and Russian</li>
+                <li>Overhauled the ideology data structure and matching logic, replacing static combination strings with a flexible schema.</li>
+                <li>Removed the following ideologies: Bordigism, Reform Gaullism, Maoism Third Worldism, Buchanan Paleoconservatism, Hard Right Paleoconservatism, Old Right Paleoconservatism, Centrist Kemalism, Conservative Kemalism, Liberal Kemalism, Socialist Kemalism, Marxism-Kemalism, Ethnonationalist Kemalism, Pekerism, Ecevitism, Neo-Nazism, Liberal Atlanticism, Conservative Atlanticism, Neoconservative Atlanticism, Labour Atlanticism, Libertarian Municipalism, Paternalistic Conservatism, Cybersyn Socialism, Libertarian Helveticism, Techno-Social Liberalism, Platformism</li>
+                <li>Added the following ideologies: Paleoconservatism, Left Kemalism,  Nationalist Kemalism, National Communism, Ego-Mutualism, National Collectivism, Liberal Imperialism, Nazi-Maoism, Putinism, Burgundian System, Savinkovism, Davos System, Mosleyism, Fabian Socialism, Russian Imperial Cult, Ujamaa, Longism, Monarquia Syndicalista, Post-Soviet Autocracy, American Technocracy, Cyber-Federalism, Liberal Meritocracy, Serenissimism</li>
+                <li>Added 3 new economic values: Participatory Economics, Corporatocracy, Hierarchical Communism.</li>
+                <li>Added 2 new culture values: Secular Humanism, Amoralism.</li>
+                <li>Added 3 new authority values: Syndicracy, Demarchy, Polycentrism.</li>
+                <li>Added 1 new nation value: Multiculturalism.</li>
+                <li>Added 3 new foreign policy values: Irredentism, Pacifism, Mercantilism.</li>
+                <li>Added 1 new technological value: Convivialism.</li>
+                <li>Added 2 new social control values: Retributivism, Reputationalism.</li>
+                <li>Added 2 new territorial organization values: Subsidiarity, Suzerainty.</li>
+                <li>Fixed match combinations for ideologies</li>
+                <li>Fixed next closest matching</li>
+                <li>Specifically marked AI generated icons</li>
+                <li>Now ideology page shows required values</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>3.5 - 19.10.2026</h3>
+            <ul>
+                <li>Added 2 new values to Technology: Agrarianism and Post-Industrialism.</li>
+                <li>Complete overhaul of the Technology question tree.</li>
+                <li>Added the following ideologies: Libertarian Helveticism, Social-Helveticism.</li>
+                <li>Expanded match combinations for Progressive Helveticism.</li>
+                <li>Added compatibility mappings for Agrarianism and Post-Industrialism across multiple ideological traditions.</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>3.4 - 18.10.2026</h3>
+            <ul>
+                <li>Added 3 new values to Resource Management: Mixed Land Tax, Tariff-Based Funding, and FairTax.</li>
+                <li>Reworked the Resource Management question tree.</li>
+                <li>Removed the "Solidarism" economic value.</li>
+                <li>Added 2 new economic values: Paternalistic Capitalism and Social Solidarity Economy.</li>
+                <li>Added the following ideologies: Tsaingwenism, Kjærsgaardism, Left-Social Democracy, Tridemism, Progressive Helveticism, Austro-Corporatism, Reform Gaullism and Kekkonism.</li>
+                <li>Fixed a calculation bug in results where the next closest match always showed a denominator of 9; it now dynamically calculates against the ideology's actual required values.</li>
+                <li>Added clickable navigation icons for Support and GitHub to the main menu.</li>
+                <li>Added the Support page with verified relief and defense initiatives for Ukraine.</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>3.3 - 18.10.2026</h3>
+            <ul>
+                <li>Replaced the broad "Totalitarianism" value with "Ethical Statism", restricting it strictly to Third Position and idealist ideologies.</li>
+                <li>Re-mapped non-Third Position authoritarian ideologies from Totalitarianism to Autocracy, Partocracy, or Technocracy.</li>
+                <li>Removed the generic "Direct Democracy" value and replaced it with 4 distinct variations: Referendum Democracy, Councilism, Communalism, and Digital Democracy.</li>
+                <li>Added "Technogaianism" to the Technology category.</li>
+                <li>Added the following ideologies: Social-Bonapartism, Techno-Social Liberalism, and Progressive National-Liberalism.</li>
+                <li>Re-mapped all ideologies previously dependent on Direct Democracy across Marxist, Socialist, Left-Libertarian, Centre-Libertarian, and Accelerationist categories.</li>
+                <li>Added Technogaianism compatibility mappings for Solarpunk Anarchism, Anarcho-Transhumanism, and Democratic Transhumanism.</li>
+                <li>Reworked Authority, Nation, Culture and Technology trees.</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>3.2 - 17.10.2026</h3>
+            <ul>
+                <li>Added the following ideologies: Pekerism, Ethnonationalist Kemalism, Eneasism, Social Nationalism, Ethnocacerismo, National Primitivism, 
+                    National Social Capitalism, Right-State Liberalism, One-Nation Conservatism, Conservative Kemalism, Conservative Technoliberalism, 
+                    Right-Social Authoritarianism, Classical Kemalism, Centrist Kemalism, Catholic Social Teaching, Bleeding-Heart Authoritarianism, 
+                    Techno-Neoliberalism, Green Social Democracy, Geo-Social Democracy, Christian Social Democracy, Police Labourism, Ecevitism, 
+                    Left-Social Authoritarianism, Progressive Social Authoritarianism, Left-Wing Populism, New Deal Liberalism, Venizelism, Liberal Kemalism, 
+                    Liberal Social Authoritarianism, Technoliberalism, American Model, Socialist Kemalism, Socialist Technoliberalism, Mugabeism, 
+                    Old Left-Populism, Marxism-Kemalism, Proutism, Yangism, Libertarian Social Democracy, Catholic Workerism, Left-State Liberalism.</li>
+                <li>Narrowed and refined value requirements for Social Democracy and Social Liberalism.</li>
+                <li>Simplified and clarified question and answer wording across Economics, Technology, Social Control, and Territorial Organization.</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>3.1 - 14.10.2026</h3>
+            <ul>
+                <li>Removed the broad umbrella economic values: Social Capitalism and Welfare Capitalism.</li>
+                <li>Added 6 new distinct economic values: Social Market, Rhine Capitalism, Solidarism, Ordnungspolitik, Residualism, and Basic Income Capitalism.</li>
+                <li>Complete ideology overhaul: re-mapped all ideologies.</li>
+                <li>Added "Previous Question" button.</li>
+                <li>Added count of identical values to the next closest match.</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>3.0 - 30.9.2026</h3>
+            <ul>
+                <li>Styling and UI enhancements.</li>
+                <li>Added 2 New Value Categories (14 new values total): Social Control and Territorial Organization.</li>
+                <li>Added Romantic Nationalism and Civilizationism to the Nation category.</li>
+                <li>Created the Dystopian ideology category.</li>
+                <li>Added the following ideologies: Ingsoc, Neo-Bolshevism, Obliteration of the Self, World State Fordism, Gileadism, One State Benefactorism, Cyberpunk Corpostatism, 
+                    Fireman Statism, Soylentism, Social Gaullism, Neo-Gaullism, Bonapartist Gaullism, Left-Gaullism, Classical Eurasianism, Duginism, Left-Eurasianism, Scythianism, 
+                    Steppe Eurasianism, Mladorossism, Liberal Atlanticism, Conservative Atlanticism, Transatlantic Federalism, Neoconservative Atlanticism, Labour Atlanticism, Fourierism, 
+                    Developmental Theocracy, Democratic Transhumanism, Cosmist Vanguardism, Neo-Solidarism, Gandhian Socialism, Minarcho-Avaritionism, Fiumanism.</li>
+                <li>Updated value requirements across multiple ideologies.</li>
+            </ul>
+        </div>
+
+        <div class="description-box">
+            <h3>2.0 - 26.9.2026</h3>
+            <ul>
+                <li>Styling and UI enhancements.</li>
+                <li>Added a 7th Technology category with 13 new values.</li>
+                <li>Added light/dark mode support.</li>
+                <li>Moved Internationalism from Nation to Foreign Policy.</li>
+                <li>Reworked and expanded question branches across all axes.</li>
+                <li>Added the following values: Traditionalist Conservatism, Religious Traditionalism, Alternative Modernism, Religious Nationalism, Alter-Globalism, 
+                    Primitivism, Neo-Luddism, Conservationism, Environmentalism, Instrumentalism, Industrialism, Ecomodernism, Prometheanism, Technocapitalism, Extropianism, 
+                    Techno-Fatalism, Transhumanism, Posthumanism.</li>
+                <li>Added the following ideologies: Rexism, Legionarianism, Techno-Fascism, National Solidarity, Feudal Monarchism, Reactionary Feudalism, Clerical Monarchism, 
+                    Neo-Absolutism, Aristocratic Cameralism, Red Toryism, Green Conservatism, Clerical Conservatism, Gaullism, Free-Market Conservatism, Agrarian Conservatism, 
+                    Liberal Toryism, Social Distributism, Social Georgism, Agrarian Social Democracy, Progressive Corporatism, Bleeding-Heart Liberalism, Geo-Liberalism, Green Liberalism, 
+                    Whiggism, Muscular Liberalism, Cybernetic Socialism, Utopian Communitarianism, Syndicalist Republicanism, Bordigism, Luxemburgism, Eurocommunism, Hoxhaism, Castroism, 
+                    Guevarism, Cyber-Communism, De Leonism, Democratic Confederalism, Guild Socialism, Eco-Socialism, Libertarian Municipalism, Cybersyn Socialism, Minarcho-Distributism, 
+                    Pirate Politics, Agorist Minarchism, Communal Distributism, Cyber-Libertarianism, Objectivism, Fusionism, Solarpunk Anarchism, Christian Anarchism, Insurrectionary Anarchism, 
+                    Mutualist Distributism, Green Anarchism, Anarcho-Primitivism, Anarcho-Transhumanism, Free-Market Anarcho-Distributism, Traditionalist Anarcho-Distributism, Crypto-Anarchism, 
+                    Autarchism, Left-Accelerationism, Right-Accelerationism, Effective Accelerationism, Unconditional Accelerationism.</li>
+                <li>Updated the following icons: State Capitalism, Paleoconservatism, Theocracy, Anarcho-Monarchism, Interventionism.</li>
+            </ul>
+        </div>
 
          <div class="description-box">
             <h3>1.4 - 13.3.2026</h3>
@@ -81,7 +244,7 @@
         </div>
 
         <div class="button-container">
-            <button onclick="location.href='index.html'">Back</button>
+            <button onclick="location.href='index.html'" data-i18n="back">Back</button>
         </div>
     </div>
 </body>

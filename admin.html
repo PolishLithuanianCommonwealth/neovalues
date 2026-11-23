@@ -6,6 +6,8 @@
     <title>NeoValues Admin</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg" href="icon.svg">
+    <script src="theme.js"></script>
+    <script src="translations.js"></script>
     <style>
         .admin-login {
             display: flex;
@@ -15,17 +17,18 @@
             margin-top: 60px;
         }
         .admin-login input {
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #e0e0e0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
             padding: 12px 20px;
             border-radius: 8px;
             font-size: 16px;
             width: 280px;
             text-align: center;
+            font-family: inherit;
         }
-        .admin-login input::placeholder { color: #666; }
-        .admin-login input:focus { outline: none; border-color: #888; }
+        .admin-login input::placeholder { color: var(--text-dim); }
+        .admin-login input:focus { outline: none; border-color: var(--accent-primary); }
 
         .stats-bar {
             display: flex;
@@ -35,24 +38,24 @@
             flex-wrap: wrap;
         }
         .stat-box {
-            background: #2a2a2a;
-            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             padding: 15px 25px;
             text-align: center;
         }
-        .stat-number { font-size: 28px; font-weight: bold; color: #fff; }
-        .stat-label { font-size: 12px; color: #888; text-transform: uppercase; margin-top: 4px; }
+        .stat-number { font-size: 28px; font-weight: bold; color: var(--text-primary); }
+        .stat-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; }
 
         .results-table {
             width: 100%;
-            max-width: 1200px;
             margin: 0 auto;
             border-collapse: collapse;
             font-size: 13px;
         }
         .results-table th {
-            background: #2a2a2a;
-            color: #aaa;
+            background: var(--card-bg);
+            color: var(--text-dim);
             padding: 10px 8px;
             text-align: left;
             font-size: 11px;
@@ -61,33 +64,35 @@
             position: sticky;
             top: 0;
             z-index: 1;
+            white-space: nowrap;
         }
         .results-table td {
             padding: 8px;
-            border-bottom: 1px solid #222;
-            color: #ccc;
-            max-width: 140px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            max-width: 135px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        .results-table tr:hover td { background: #1e1e1e; cursor: pointer; }
+        .results-table tr:hover td { background: var(--hover-shadow); cursor: pointer; }
         .results-table .ideology-cell {
-            color: #fff;
-            font-weight: bold;
+            font-weight: 700;
         }
         .result-tag {
-            background: #333;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 12px;
         }
-        #admin-content { display: none; }
+        #admin-content { display: none; width: 100%; }
         .table-scroll {
             max-height: 70vh;
-            overflow-y: auto;
+            overflow: auto;
             border-radius: 10px;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
+            width: 100%;
         }
         .filter-bar {
             display: flex;
@@ -97,53 +102,59 @@
             flex-wrap: wrap;
         }
         .filter-bar select, .filter-bar button {
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #e0e0e0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
             padding: 8px 12px;
             border-radius: 6px;
             font-size: 13px;
+            font-family: inherit;
+            width: auto;
+            min-width: 150px;
         }
-        .filter-bar select:focus { outline: none; border-color: #888; }
+        .filter-bar select:focus { outline: none; border-color: var(--accent-primary); }
 
         /* --- Modal --- */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.82);
             z-index: 100;
             justify-content: center;
             align-items: center;
         }
         .modal-overlay.active { display: flex; }
         .modal-content {
-            background: #1a1a1a;
-            border: 1px solid #333;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 40px;
-            max-width: 800px;
-            width: 90%;
+            padding: 36px;
+            max-width: 880px;
+            width: 92%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: var(--soft-shadow);
         }
         .modal-close {
             position: absolute;
             top: 15px; right: 20px;
             background: none;
             border: none;
-            color: #888;
-            font-size: 24px;
+            color: var(--text-dim);
+            font-size: 26px;
             cursor: pointer;
+            width: auto;
+            padding: 4px 10px;
         }
-        .modal-close:hover { color: #fff; }
+        .modal-close:hover { color: var(--text-primary); }
 
         .modal-icons {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
+            gap: 22px;
             margin: 25px 0;
         }
         .modal-icon-item {
@@ -152,11 +163,11 @@
             align-items: center;
             text-decoration: none;
             color: inherit;
-            width: 110px;
+            width: 112px;
         }
         .modal-icon-item img {
-            width: 80px;
-            height: 80px;
+            width: 78px;
+            height: 78px;
             border-radius: 50%;
             margin-bottom: 8px;
         }
@@ -164,9 +175,10 @@
             font-size: 11px;
             text-align: center;
             text-transform: uppercase;
-            color: #ccc;
+            color: var(--text-primary);
             line-height: 1.3;
             margin: 0;
+            font-weight: 600;
         }
 
         .modal-ideology {
@@ -192,7 +204,7 @@
         .modal-who {
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid #333;
+            border-top: 1px solid var(--border-color);
         }
         .who-row {
             display: flex;
@@ -201,24 +213,24 @@
             font-size: 13px;
         }
         .who-label {
-            color: #666;
+            color: var(--text-dim);
             min-width: 80px;
             text-transform: uppercase;
             font-size: 11px;
             padding-top: 1px;
         }
-        .who-value { color: #aaa; }
+        .who-value { color: var(--text-primary); }
         .who-device {
-            background: #2a2a2a;
+            background: var(--card-bg);
             padding: 4px 10px;
             border-radius: 5px;
-            color: #ddd;
+            color: var(--text-primary);
             font-size: 13px;
             display: inline-block;
             margin-top: 2px;
         }
         .modal-time {
-            color: #555;
+            color: var(--text-dim);
             font-size: 12px;
             text-align: center;
             margin-bottom: 10px;
@@ -226,10 +238,23 @@
     </style>
 </head>
 <body>
-    <div class="main-container" style="max-width: 1300px;">
+    <button class="theme-toggle-corner" onclick="toggleTheme()" aria-label="Toggle light/dark mode">
+        <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true">
+            <path d="M0,0 L250,250 L250,0 Z"></path>
+            <g class="icon-sun" transform="translate(142, 52) scale(2.2)">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </g>
+            <g class="icon-moon" transform="translate(142, 52) scale(2.2)">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </g>
+        </svg>
+    </button>
+
+    <div class="main-container" style="max-width: 1480px;">
         <div class="title-container">
             <h1>NeoValues</h1>
-            <span class="version-text">admin</span>
+            <span class="version-text">admin · v4.2</span>
         </div>
 
         <!-- Login -->
@@ -283,6 +308,9 @@
                             <th>Authority</th>
                             <th>Nation</th>
                             <th>Foreign</th>
+                            <th>Technology</th>
+                            <th>Control</th>
+                            <th>Territory</th>
                             <th>Ideology</th>
                             <th>Who?</th>
                         </tr>
@@ -299,7 +327,7 @@
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <div class="title-container" style="margin-bottom:0">
                 <h1 style="font-size:24px">NeoValues</h1>
-                <span class="version-text">v1.4</span>
+                <span class="version-text">v4.2</span>
             </div>
             <div class="modal-time" id="modal-time"></div>
             <div class="modal-icons" id="modal-icons"></div>
@@ -318,74 +346,147 @@
         let allData = [];
         let currentPw = '';
 
-        // --- Dynamically recompute ideology from current data.js mappings ---
-        // Mirrors the exact logic from results.html so labels always stay current
+        function getValDisplayName(val) {
+            if (!val) return '-';
+            const enVals = (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS.en && TRANSLATIONS.en.values) || {};
+            return enVals[val] || val.replace(/_/g, ' ');
+        }
+
+        // --- Dynamically recompute ideology from current v4.2 data.js mappings ---
+        // Gracefully supports both 9-category v4.2 submissions and legacy 6-category v1.4 submissions
         function computeIdeology(s) {
             const results = {
-                economics: s.economics,
-                resource_management: s.resource_management,
-                culture: s.culture,
-                authority: s.authority,
-                nation: s.nation,
-                foreign: s.foreign_policy
+                economics: s.economics || null,
+                resource_management: s.resource_management || null,
+                culture: s.culture || null,
+                authority: s.authority || null,
+                nation: s.nation || null,
+                foreign: s.foreign_policy || null,
+                technology: s.technology || null,
+                social_control: s.social_control || null,
+                territorial_organization: s.territorial_organization || null
             };
-            const userResults = Object.values(results);
 
-            // Exact match
-            const matchedKey = Object.keys(labelMapping).find(key => {
-                const requiredParts = key.split('|');
-                return requiredParts.every(part => userResults.includes(part));
-            });
-            const finalLabel = matchedKey ? labelMapping[matchedKey] : "No exact match";
+            const isLegacyRow = !results.technology && !results.social_control && !results.territorial_organization;
 
-            // Scored next-closest
-            const scoredLabels = Object.keys(labelMapping)
-                .map(key => {
-                    const requiredParts = key.split('|');
-                    let score = 0;
-                    let penalty = 0;
+            // 1. Exact Match
+            const exactMatches = [];
+            for (const [ideologyName, requirements] of Object.entries(ideologies)) {
+                const allReqCats = Object.keys(requirements);
+                const reqCats = isLegacyRow
+                    ? allReqCats.filter(cat => results[cat] !== null)
+                    : allReqCats;
+                if (reqCats.length === 0) continue;
 
-                    requiredParts.forEach(reqVal => {
-                        const category = Object.keys(resultsMapping).find(cat => resultsMapping[cat][reqVal]);
-                        const userVal = results[category];
-                        if (!userVal) return;
+                const isFullMatch = reqCats.every(category => {
+                    const allowed = Array.isArray(requirements[category])
+                        ? requirements[category]
+                        : [requirements[category]];
+                    return allowed.includes(results[category]);
+                });
 
-                        const userGroup = Object.keys(subCategories[category] || {}).find(group =>
-                            subCategories[category][group].includes(userVal)
-                        );
-                        const reqGroup = Object.keys(subCategories[category] || {}).find(group =>
-                            subCategories[category][group].includes(reqVal)
-                        );
-
-                        if (userVal === reqVal) score += 1.0;
-                        else if (userGroup && userGroup === reqGroup) score += 0.5;
-
-                        if (userGroup && reqGroup && incompatibleSubCategories[userGroup]?.includes(reqGroup)) {
-                            penalty = -100;
-                        }
+                if (isFullMatch) {
+                    const totalOptions = reqCats.reduce((sum, category) => {
+                        const allowed = Array.isArray(requirements[category])
+                            ? requirements[category]
+                            : [requirements[category]];
+                        return sum + allowed.length;
+                    }, 0);
+                    exactMatches.push({
+                        name: ideologyName,
+                        totalRequired: reqCats.length,
+                        totalOptions
                     });
-
-                    return { key, label: labelMapping[key], score: score + penalty };
-                })
-                .sort((a, b) => b.score - a.score)
-                .filter(item => item.label !== finalLabel);
-
-            const uniqueScoredLabels = [];
-            const seenLabels = new Set();
-            for (const item of scoredLabels) {
-                if (!seenLabels.has(item.label)) {
-                    seenLabels.add(item.label);
-                    uniqueScoredLabels.push(item);
                 }
             }
 
+            exactMatches.sort((a, b) => (b.totalRequired - a.totalRequired) || (a.totalOptions - b.totalOptions));
+            const finalLabel = exactMatches.length > 0 ? exactMatches[0].name : "No exact match";
+
+            // 2. Next Closest Match
+            const scoredLabels = Object.entries(ideologies).map(([name, requirements]) => {
+                const allReqCats = Object.keys(requirements);
+                const requiredCategories = isLegacyRow
+                    ? allReqCats.filter(cat => results[cat] !== null)
+                    : allReqCats;
+                const totalRequired = requiredCategories.length;
+                let score = 0;
+                let penalty = 0;
+                let identicalCount = 0;
+
+                requiredCategories.forEach(category => {
+                    const allowed = Array.isArray(requirements[category])
+                        ? requirements[category]
+                        : [requirements[category]];
+                    const userVal = results[category];
+                    if (!userVal) return;
+
+                    if (allowed.includes(userVal)) {
+                        score += 1.0;
+                        identicalCount++;
+                        return;
+                    }
+
+                    const userGroup = Object.keys(subCategories[category] || {}).find(group =>
+                        subCategories[category][group].includes(userVal)
+                    );
+                    if (!userGroup) return;
+
+                    const sharesSubCategory = allowed.some(val => {
+                        const valGroup = Object.keys(subCategories[category] || {}).find(group =>
+                            subCategories[category][group].includes(val)
+                        );
+                        return valGroup === userGroup;
+                    });
+
+                    if (sharesSubCategory) {
+                        score += 0.35;
+                    }
+
+                    const allowedGroups = allowed.map(val =>
+                        Object.keys(subCategories[category] || {}).find(group =>
+                            subCategories[category][group].includes(val)
+                        )
+                    ).filter(Boolean);
+
+                    const isAllIncompatible = allowedGroups.length > 0 && allowedGroups.every(reqGroup => {
+                        const userIncompat = incompatibleSubCategories[userGroup] || [];
+                        const reqIncompat = incompatibleSubCategories[reqGroup] || [];
+                        return userIncompat.includes(reqGroup) || reqIncompat.includes(userGroup);
+                    });
+
+                    if (isAllIncompatible) {
+                        penalty = -100;
+                    }
+                });
+
+                const matchPercentage = totalRequired > 0 && penalty === 0
+                    ? (score / totalRequired) * 100
+                    : -100;
+
+                return {
+                    label: name,
+                    score: score + penalty,
+                    matchPercentage: Math.round(matchPercentage),
+                    identicalCount,
+                    totalRequired
+                };
+            })
+            .filter(item => item.label !== finalLabel && item.score > 0)
+            .sort((a, b) => {
+                if (b.matchPercentage !== a.matchPercentage) return b.matchPercentage - a.matchPercentage;
+                if (b.identicalCount !== a.identicalCount) return b.identicalCount - a.identicalCount;
+                return b.totalRequired - a.totalRequired;
+            });
+
             return {
                 ideology: finalLabel,
-                nextClosest: uniqueScoredLabels.length > 0 ? uniqueScoredLabels[0].label : null
+                nextClosest: (scoredLabels.length > 0 && scoredLabels[0].matchPercentage > 0)
+                    ? scoredLabels[0].label
+                    : null
             };
         }
 
-        // Enrich each submission with live-computed ideology
         function enrichData() {
             allData.forEach(s => {
                 const computed = computeIdeology(s);
@@ -438,30 +539,30 @@
         }
 
         function populateFilters() {
-            const ideologies = [...new Set(allData.map(s => s._ideology).filter(Boolean))].sort();
+            const matchedIdeologies = [...new Set(allData.map(s => s._ideology).filter(Boolean))].sort();
             const econs = [...new Set(allData.map(s => s.economics).filter(Boolean))].sort();
             const auths = [...new Set(allData.map(s => s.authority).filter(Boolean))].sort();
 
-            fillSelect('filter-ideology', ideologies);
-            fillSelect('filter-econ', econs);
-            fillSelect('filter-authority', auths);
+            fillSelect('filter-ideology', matchedIdeologies, false);
+            fillSelect('filter-econ', econs, true);
+            fillSelect('filter-authority', auths, true);
         }
 
-        function fillSelect(id, values) {
+        function fillSelect(id, values, isValueId) {
             const sel = document.getElementById(id);
             const firstOpt = sel.options[0].text;
             sel.innerHTML = `<option value="">${firstOpt}</option>`;
             values.forEach(v => {
                 const opt = document.createElement('option');
                 opt.value = v;
-                opt.textContent = v.replace(/_/g, ' ');
+                opt.textContent = isValueId ? getValDisplayName(v) : v;
                 sel.appendChild(opt);
             });
         }
 
         function parseUA(ua) {
             if (!ua) return { browser: 'Unknown', os: 'Unknown', device: 'Unknown' };
-            
+
             let browser = 'Unknown';
             if (ua.includes('SamsungBrowser/')) browser = 'Samsung Browser';
             else if (ua.includes('Edg/')) browser = 'Edge';
@@ -510,32 +611,43 @@
                 tr.onclick = () => openModal(s);
                 tr.innerHTML = `
                     <td>${s.id}</td>
-                    <td style="color:#d4a574;font-weight:bold">${s.name || '<span style="color:#555">—</span>'}</td>
+                    <td style="color:#d4a574;font-weight:bold">${s.name ? escapeHtml(s.name) : '<span style="opacity:0.45">—</span>'}</td>
                     <td>${toEST(s.timestamp)}</td>
-                    <td><span class="result-tag">${fmt(s.economics)}</span></td>
-                    <td><span class="result-tag">${fmt(s.resource_management)}</span></td>
-                    <td><span class="result-tag">${fmt(s.culture)}</span></td>
-                    <td><span class="result-tag">${fmt(s.authority)}</span></td>
-                    <td><span class="result-tag">${fmt(s.nation)}</span></td>
-                    <td><span class="result-tag">${fmt(s.foreign_policy)}</span></td>
-                    <td class="ideology-cell">${s._ideology || '-'}</td>
-                    <td style="color:#777;font-size:12px">${shortWho(s)}</td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.economics))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.resource_management))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.culture))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.authority))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.nation))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.foreign_policy))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.technology))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.social_control))}</span></td>
+                    <td><span class="result-tag">${escapeHtml(getValDisplayName(s.territorial_organization))}</span></td>
+                    <td class="ideology-cell">${escapeHtml(s._ideology || '-')}</td>
+                    <td style="opacity:0.7;font-size:12px">${escapeHtml(shortWho(s))}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function fmt(val) {
-            return val ? val.replace(/_/g, ' ') : '-';
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
         }
 
         function toEST(ts) {
             if (!ts) return '-';
             const d = new Date(ts + 'Z');
-            return d.toLocaleString('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+            return d.toLocaleString('en-US', {
+                timeZone: 'America/New_York',
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            });
         }
 
-        // --- Modal ---
         function openModal(s) {
             const modal = document.getElementById('detail-modal');
             const iconsDiv = document.getElementById('modal-icons');
@@ -545,47 +657,46 @@
             const timeDiv = document.getElementById('modal-time');
 
             timeDiv.textContent = toEST(s.timestamp);
-
-            // Build icons like the real results page
             iconsDiv.innerHTML = '';
+
             const resultMap = {
                 economics: s.economics,
                 resource_management: s.resource_management,
                 culture: s.culture,
                 authority: s.authority,
                 nation: s.nation,
-                foreign: s.foreign_policy
+                foreign: s.foreign_policy,
+                technology: s.technology,
+                social_control: s.social_control,
+                territorial_organization: s.territorial_organization
             };
 
             categories.forEach(cat => {
                 const val = resultMap[cat];
                 if (!val) return;
 
-                const item = document.createElement('div');
+                const item = document.createElement('a');
                 item.className = 'modal-icon-item';
+                item.href = `description.html?id=${encodeURIComponent(val)}&cat=${encodeURIComponent(cat)}`;
+                item.target = '_blank';
 
                 const img = document.createElement('img');
                 img.src = `icons/${cat}/${val}.svg`;
                 img.onerror = () => { img.style.display = 'none'; };
 
                 const name = document.createElement('p');
-                const displayName = (resultsMapping[cat] && resultsMapping[cat][val]) 
-                    ? resultsMapping[cat][val] 
-                    : val;
-                name.textContent = displayName.replace(/_/g, ' ');
+                name.textContent = getValDisplayName(val);
 
                 item.appendChild(img);
                 item.appendChild(name);
                 iconsDiv.appendChild(item);
             });
 
-            // Use live-computed ideology
             const ideology = s._ideology || 'No exact match';
             ideologyDiv.textContent = ideology;
             ideologyDiv.style.backgroundColor = (typeof labelColors !== 'undefined' && labelColors[ideology]) || '#7a7a7a';
             ideologyDiv.style.color = '#fff';
 
-            // Live-computed next closest
             if (s._nextClosest) {
                 nextDiv.textContent = `Next closest: ${s._nextClosest}`;
                 nextDiv.style.borderColor = (typeof labelColors !== 'undefined' && labelColors[s._nextClosest]) || '#7a7a7a';
@@ -595,29 +706,28 @@
                 nextDiv.style.display = 'none';
             }
 
-            // Who section
             const info = parseUA(s.user_agent);
             whoDiv.innerHTML = `
-                <div style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Who could this be?</div>
+                <div style="opacity:0.6;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Who could this be?</div>
                 ${s.name ? `<div class="who-row">
                     <span class="who-label">Name</span>
-                    <span class="who-value" style="color:#d4a574;font-weight:bold;font-size:16px">${s.name}</span>
+                    <span class="who-value" style="color:#d4a574;font-weight:bold;font-size:16px">${escapeHtml(s.name)}</span>
                 </div>` : ''}
                 <div class="who-row">
                     <span class="who-label">Device</span>
-                    <span class="who-device">${info.device}</span>
+                    <span class="who-device">${escapeHtml(info.device)}</span>
                 </div>
                 <div class="who-row">
                     <span class="who-label">Browser</span>
-                    <span class="who-value">${info.browser} on ${info.os}</span>
+                    <span class="who-value">${escapeHtml(info.browser)} on ${escapeHtml(info.os)}</span>
                 </div>
                 <div class="who-row">
                     <span class="who-label">IP</span>
-                    <span class="who-value" style="font-family:monospace">${s.ip || 'unknown'}</span>
+                    <span class="who-value" style="font-family:monospace">${escapeHtml(s.ip || 'unknown')}</span>
                 </div>
                 <div class="who-row">
                     <span class="who-label">Full UA</span>
-                    <span class="who-value" style="font-size:11px;color:#555;word-break:break-all;white-space:normal">${s.user_agent || 'unknown'}</span>
+                    <span class="who-value" style="font-size:11px;opacity:0.6;word-break:break-all;white-space:normal">${escapeHtml(s.user_agent || 'unknown')}</span>
                 </div>
             `;
 
@@ -635,9 +745,19 @@
         });
 
         function exportCSV() {
-            const headers = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','_ideology','_nextClosest','ip','user_agent'];
-            const headerNames = ['id','timestamp','economics','resource_management','culture','authority','nation','foreign_policy','matched_ideology','next_closest','ip','user_agent'];
-            const rows = allData.map(s => headers.map(h => `"${(s[h]||'').toString().replace(/"/g,'""')}"`).join(','));
+            const headers = [
+                'id', 'name', 'timestamp',
+                'economics', 'resource_management', 'culture', 'authority', 'nation', 'foreign_policy',
+                'technology', 'social_control', 'territorial_organization',
+                '_ideology', '_nextClosest', 'ip', 'user_agent'
+            ];
+            const headerNames = [
+                'id', 'name', 'timestamp',
+                'economics', 'resource_management', 'culture', 'authority', 'nation', 'foreign_policy',
+                'technology', 'social_control', 'territorial_organization',
+                'matched_ideology', 'next_closest', 'ip', 'user_agent'
+            ];
+            const rows = allData.map(s => headers.map(h => `"${(s[h] || '').toString().replace(/"/g, '""')}"`).join(','));
             const csv = [headerNames.join(','), ...rows].join('\n');
             const blob = new Blob([csv], { type: 'text/csv' });
             const a = document.createElement('a');

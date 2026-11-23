@@ -6,53 +6,84 @@
     <title>Quiz</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg" href="icon.svg">
-</head>
-<body>
-    <div class="main-container">
-
-    <!-- Name input screen -->
-    <div id="name-screen" class="question-container">
-        <h2>Enter your name to begin</h2>
-    </div>
-    <div id="name-buttons">
-        <input type="text" id="name-input" placeholder="Your name" style="
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #e0e0e0;
-            padding: 12px 20px;
-            border-radius: 8px;
+    <script src="theme.js"></script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <style>
+        .name-input-field {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 14px 22px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
             font-size: 16px;
-            width: 280px;
+            width: 300px;
+            max-width: 85vw;
             text-align: center;
             display: block;
-            margin: 0 auto 15px;
-        " onkeydown="if(event.key==='Enter') startQuiz()">
-        <button onclick="startQuiz()">Start</button>
-    </div>
-
-    <!-- Quiz screen (hidden until name entered) -->
-    <div class="question-container" style="display:none" id="quiz-screen">
-        <h2 id="question"></h2>
-    </div>
-    <div id="buttons" style="display:none">
-    </div>
-
-    <script>
-        function startQuiz() {
-            const name = document.getElementById('name-input').value.trim();
-            if (!name) {
-                document.getElementById('name-input').style.borderColor = '#e74c3c';
-                return;
-            }
-            localStorage.setItem('quizUserName', name);
-            document.getElementById('name-screen').style.display = 'none';
-            document.getElementById('name-buttons').style.display = 'none';
-            document.getElementById('quiz-screen').style.display = '';
-            document.getElementById('buttons').style.display = '';
-            loadQuiz();
+            margin: 0 auto 18px;
+            box-shadow: var(--soft-shadow);
+            transition: var(--smooth-transition);
         }
-    </script>
-    <script src="quiz.js"></script>
+        .name-input-field::placeholder {
+            color: var(--text-dim);
+        }
+        .name-input-field:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        .name-input-field.input-error {
+            border-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle-corner" onclick="toggleTheme()" aria-label="Toggle light/dark mode">
+        <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true">
+            <path d="M0,0 L250,250 L250,0 Z"></path>
+            <g class="icon-sun" transform="translate(142, 52) scale(2.2)">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </g>
+            <g class="icon-moon" transform="translate(142, 52) scale(2.2)">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </g>
+        </svg>
+    </button>
+
+    <div class="main-container">
+        <!-- Name input screen -->
+        <div id="name-screen" class="question-container">
+            <h2 data-i18n="enterName">Enter your name to begin</h2>
+        </div>
+        <div id="name-buttons" style="display: flex; flex-direction: column; align-items: center;">
+            <input
+                type="text"
+                id="name-input"
+                class="name-input-field"
+                placeholder="Your name"
+                oninput="this.classList.remove('input-error')"
+                onkeydown="if(event.key==='Enter') beginNamedQuiz()"
+            >
+            <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center;">
+                <button onclick="beginNamedQuiz()" data-i18n="start">Start</button>
+                <button onclick="location.href='Instruction.html'" data-i18n="backToInstructions">Back to Instructions</button>
+            </div>
+        </div>
+
+        <!-- Quiz screen (hidden until name entered) -->
+        <div class="question-container" id="quiz-screen" style="display: none;">
+            <h2 id="question"></h2>
+        </div>
+
+        <div id="buttons" style="display: none;"></div>
+
+        <div class="button-container" id="quiz-nav" style="display: none;">
+            <button id="back-button" onclick="previousQuestion()" data-i18n="backToInstructions">Back to Instructions</button>
+        </div>
+
+        <script src="quiz.js"></script>
     </div>
 </body>
 </html>

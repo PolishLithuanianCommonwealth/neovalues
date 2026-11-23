@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const Database = require('better-sqlite3');
 
 const app = express();
@@ -9,7 +10,6 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'neovalues-admin-2024';
 // --- Database Setup ---
 // Use /app/data/ on Railway (persistent volume), local dir for dev
 const dbDir = process.env.RAILWAY_ENVIRONMENT ? '/app/data' : __dirname;
-const fs = require('fs');
 if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 const db = new Database(path.join(dbDir, 'results.db'));
 db.pragma('journal_mode = WAL');
@@ -25,6 +25,9 @@ db.exec(`
     authority TEXT,
     nation TEXT,
     foreign_policy TEXT,
+    technology TEXT,
+    social_control TEXT,
+    territorial_organization TEXT,
     matched_ideology TEXT,
     next_closest TEXT,
     user_agent TEXT,
@@ -32,12 +35,28 @@ db.exec(`
   )
 `);
 
-// Add name column if it doesn't exist (for existing DBs)
-try { db.exec('ALTER TABLE submissions ADD COLUMN name TEXT'); } catch(e) {}
+// Safe migrations for existing v1.4 Databases
+const migrations = [
+  'ALTER TABLE submissions ADD COLUMN name TEXT',
+  'ALTER TABLE submissions ADD COLUMN technology TEXT',
+  'ALTER TABLE submissions ADD COLUMN social_control TEXT',
+  'ALTER TABLE submissions ADD COLUMN territorial_organization TEXT'
+];
+for (const sql of migrations) {
+  try { db.exec(sql); } catch (e) {}
+}
 
 const insertStmt = db.prepare(`
-  INSERT INTO submissions (name, economics, resource_management, culture, authority, nation, foreign_policy, matched_ideology, next_closest, user_agent, ip)
-  VALUES (@name, @economics, @resource_management, @culture, @authority, @nation, @foreign_policy, @matched_ideology, @next_closest, @user_agent, @ip)
+  INSERT INTO submissions (
+    name, economics, resource_management, culture, authority, nation,
+    foreign_policy, technology, social_control, territorial_organization,
+    matched_ideology, next_closest, user_agent, ip
+  )
+  VALUES (
+    @name, @economics, @resource_management, @culture, @authority, @nation,
+    @foreign_policy, @technology, @social_control, @territorial_organization,
+    @matched_ideology, @next_closest, @user_agent, @ip
+  )
 `);
 
 const getAllStmt = db.prepare('SELECT * FROM submissions ORDER BY id DESC');
@@ -50,8 +69,8 @@ app.use(express.static(path.join(__dirname), { extensions: ['html'] }));
 // --- API: Submit Results ---
 app.post('/api/submit', (req, res) => {
   try {
-    const { results, matchedIdeology, nextClosest, userName } = req.body;
-    
+    const { results = {}, matchedIdeology, nextClosest, userName } = req.body || {};
+
     insertStmt.run({
       name: userName || null,
       economics: results.economics || null,
@@ -60,6 +79,9 @@ app.post('/api/submit', (req, res) => {
       authority: results.authority || null,
       nation: results.nation || null,
       foreign_policy: results.foreign || null,
+      technology: results.technology || null,
+      social_control: results.social_control || null,
+      territorial_organization: results.territorial_organization || null,
       matched_ideology: matchedIdeology || null,
       next_closest: nextClosest || null,
       user_agent: req.headers['user-agent'] || null,
@@ -86,6 +108,10 @@ app.get('/api/admin/results', (req, res) => {
 });
 
 // --- Start ---
-app.listen(PORT, () => {
-  console.log(`NeoValues server running on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`NeoValues server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
