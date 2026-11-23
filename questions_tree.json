@@ -483,6 +483,14 @@
           "de": "Sofortige revolutionäre Abschaffung von Geld, Lohnarbeit, Tausch und jeder Übergangs-Arbeitsrechnung",
           "es": "Abolición revolucionaria inmediata del dinero, el trabajo asalariado, el intercambio y toda contabilidad transicional",
           "next": "communization"
+        },
+        {
+          "en": "Open gift economies and reciprocal sharing with no formal accounting or exchange",
+          "uk": "Відкрита економіка дарування та взаємного обміну без жодного формального обліку чи торгівлі",
+          "ru": "Открытая экономика дарения и безвозмездной взаимопомощи без формального учёта и обмена",
+          "de": "Offene Schenkökonomie und gegenseitiges Teilen ohne formale Abrechnung oder Tausch",
+          "es": "Economías del don abiertas y reparto recíproco sin contabilidad formal ni intercambio",
+          "next": "gift_economy"
         }
       ]
     },
@@ -769,6 +777,9 @@
     },
     {
       "id": "council_planning"
+    },
+    {
+      "id": "gift_economy"
     }
   ],
   "resource_management": [
@@ -947,6 +958,14 @@
           "de": "Steuern, Geld und individuelle Arbeitsrechnung vollständig abschaffen und alle Güter frei nach Bedarf verteilen",
           "es": "Abolir por completo los impuestos, el dinero y la contabilidad laboral individual y distribuir todos los bienes libremente según las necesidades",
           "next": "collective_distribution"
+        },
+        {
+          "en": "Steward land, ecosystems, and infrastructure as non-saleable commons governed by local user assemblies",
+          "uk": "Управляти землею, екосистемами та інфраструктурою як невідчужуваним спільним надбанням через збори громад",
+          "ru": "Управлять землёй, экосистемами и инфраструктурой как неотчуждаемым общим достоянием через собрания общин",
+          "de": "Boden, Ökosysteme und Infrastruktur als unverkäufliche Allmende durch lokale Nutzerversammlungen verwalten",
+          "es": "Gestionar la tierra, los ecosistemas y la infraestructura como bienes comunes inalienables regidos por asambleas locales",
+          "next": "commons_stewardship"
         }
       ]
     },
@@ -985,6 +1004,9 @@
     },
     {
       "id": "labor_vouchers"
+    },
+    {
+      "id": "commons_stewardship"
     }
   ],
   "culture": [
@@ -997,11 +1019,11 @@
       "es": "¿Cómo debería abordar la sociedad las tradiciones culturales y el cambio social?",
       "options": [
         {
-          "en": "Reform outdated norms to expand personal freedom and social equality",
-          "uk": "Реформувати застарілі норми для розширення особистої свободи та соціальної рівності",
-          "ru": "Реформировать устаревшие нормы для расширения личной свободы и социального равенства",
-          "de": "Überholte Normen reformieren, um persönliche Freiheit und soziale Gleichheit auszubauen",
-          "es": "Reformar las normas obsoletas para ampliar la libertad personal y la igualdad social",
+          "en": "Transform or reform culture to advance human liberation, equality, or revolutionary modernity",
+          "uk": "Перетворити або реформувати культуру задля людського визволення, рівності чи революційної сучасності",
+          "ru": "Преобразовать или реформировать культуру ради освобождения человека, равенства или революционной современности",
+          "de": "Kultur umgestalten oder reformieren, um menschliche Befreiung, Gleichheit oder revolutionäre Moderne voranzutreiben",
+          "es": "Transformar o reformar la cultura para impulsar la liberación humana, la igualdad o una modernidad revolucionaria",
           "next": "c_prog_1"
         },
         {
@@ -1069,6 +1091,22 @@
           "de": "Ethik und Gesellschaft auf wissenschaftliche Vernunft, Empirie und säkulare Menschenwürde gründen",
           "es": "Fundamentar la ética y la sociedad en la razón científica, el empirismo y la dignidad humana secular",
           "next": "secular_humanism"
+        },
+        {
+          "en": "Build an emancipated working-class culture, art, and collective education breaking bourgeois hegemony",
+          "uk": "Творити визволену пролетарську культуру, мистецтво та колективну освіту, руйнуючи буржуазну гегемонію",
+          "ru": "Создавать свободную пролетарскую культуру, искусство и коллективное просвещение, разрушая буржуазную гегемонию",
+          "de": "Eine emanzipierte Arbeiterkultur, Kunst und kollektive Bildung gegen bürgerliche Hegemonie aufbauen",
+          "es": "Construir una cultura obrera emancipada, arte y educación colectiva que rompan la hegemonía burguesa",
+          "next": "proletarian_culture"
+        },
+        {
+          "en": "Create a radical, avant-garde modernity that sweeps away both traditional customs and bourgeois norms",
+          "uk": "Створити радикальну авангардну сучасність, що змітає як традиційні звичаї, так і буржуазні норми",
+          "ru": "Создать радикальную авангардную современность, сметающую как старые обычаи, так и буржуазные нормы",
+          "de": "Eine radikale, avantgardistische Moderne schaffen, die traditionelle Bräuche und bürgerliche Normen überwindet",
+          "es": "Crear una modernidad radical y vanguardista que barra tanto las costumbres tradicionales como las normas burguesas",
+          "next": "alternative_modernism"
         }
       ]
     },
@@ -1339,6 +1377,9 @@
     },
     {
       "id": "amoralism"
+    },
+    {
+      "id": "proletarian_culture"
     }
   ],
   "authority": [
@@ -1731,11 +1772,11 @@
       "es": "¿Cómo debería organizarse este poder secular centralizado?",
       "options": [
         {
-          "en": "A single vanguard party directs the state and mobilizes society",
-          "uk": "Єдина авангардна партія спрямовує державу та мобілізує суспільство",
-          "ru": "Единая авангардная партия направляет государство и мобилизует общество",
-          "de": "Eine einzige Avantgardepartei lenkt den Staat und mobilisiert die Gesellschaft",
-          "es": "Un único partido de vanguardia dirige el Estado y moviliza a la sociedad",
+          "en": "A single dominant ruling party monopolizes state administration and political institutions",
+          "uk": "Єдина панівна правляча партія монополізує державне управління та політичні інститути",
+          "ru": "Единая господствующая правящая партия монополизирует государственное управление и политические институты",
+          "de": "Eine einzige dominante Staatspartei monopolisiert Staatsverwaltung und politische Institutionen",
+          "es": "Un único partido gobernante dominante monopoliza la administración estatal y las instituciones políticas",
           "next": "partocracy"
         },
         {
@@ -1753,6 +1794,14 @@
           "de": "Ein allumfassender ethischer Staat fungiert als oberste moralische und spirituelle Autorität",
           "es": "Un Estado ético omnipresente actúa como la suprema autoridad moral y espiritual",
           "next": "ethical_statism"
+        },
+        {
+          "en": "A disciplined revolutionary class party leads the proletariat to overthrow the old order",
+          "uk": "Дисциплінована революційна класова партія веде пролетаріат до повалення старого ладу",
+          "ru": "Дисциплинированная революционная классовая партия ведёт пролетариат к свержению старого строя",
+          "de": "Eine disziplinierte revolutionäre Klassenpartei führt das Proletariat zum Sturz der alten Ordnung",
+          "es": "Un partido revolucionario de clase disciplinado guía al proletariado para derrocar el viejo orden",
+          "next": "vanguardism"
         }
       ]
     },
@@ -1833,6 +1882,9 @@
     },
     {
       "id": "ochlocracy"
+    },
+    {
+      "id": "vanguardism"
     }
   ],
   "nation": [
@@ -2503,6 +2555,14 @@
           "de": "Technologie schlicht als neutrales Werkzeug zur Lösung praktischer Alltagsprobleme betrachten",
           "es": "Tratar la tecnología simplemente como una herramienta neutral para resolver problemas prácticos cotidianos",
           "next": "instrumentalism"
+        },
+        {
+          "en": "Build decentralized open-source software, peer-to-peer networks, and libre digital commons",
+          "uk": "Розвивати децентралізований відкритий код, однорангові мережі та вільні цифрові спільні блага",
+          "ru": "Развивать децентрализованный открытый код, пиринговые сети и свободные цифровые общие блага",
+          "de": "Dezentrale Open-Source-Software, Peer-to-Peer-Netze und freie digitale Allmende aufbauen",
+          "es": "Construir software libre descentralizado, redes entre pares y bienes comunes digitales abiertos",
+          "next": "digital_commons"
         }
       ]
     },
@@ -2605,6 +2665,14 @@
           "de": "Endlos im Sonnensystem expandieren und kosmische Energie erschließen",
           "es": "Expandirse sin límites por el sistema solar y cosechar energía cósmica",
           "next": "extropianism"
+        },
+        {
+          "en": "Unite humanity to conquer disease and biological death while collectively exploring the cosmos",
+          "uk": "Об'єднати людство для подолання хвороб і біологічної смерті та спільного освоєння космосу",
+          "ru": "Объединить человечество для победы над болезнями и биологической смертью и общего освоения космоса",
+          "de": "Die Menschheit vereinen, um Krankheit und biologischen Tod zu besiegen und gemeinsam den Kosmos zu erschließen",
+          "es": "Unir a la humanidad para vencer la enfermedad y la muerte biológica mientras explora colectivamente el cosmos",
+          "next": "cosmism"
         }
       ]
     },
@@ -2684,6 +2752,12 @@
     },
     {
       "id": "convivialism"
+    },
+    {
+      "id": "digital_commons"
+    },
+    {
+      "id": "cosmism"
     }
   ],
   "social_control": [
@@ -2744,6 +2818,14 @@
           "de": "Auf freiwillige Gemeinschaftsnormen, sozialen Ruf und gegenseitiges Vertrauen statt auf Staatspolizei setzen",
           "es": "Confiar en las normas comunitarias voluntarias, la reputación social y la confianza mutua en lugar de la policía estatal",
           "next": "reputationalism"
+        },
+        {
+          "en": "Abolish prisons and punitive policing in favor of community mediation, rehabilitation, and repairing harm",
+          "uk": "Скасувати в'язниці та каральну поліцію на користь громадського посередництва, реабілітації й відшкодування шкоди",
+          "ru": "Упразднить тюрьмы и карательную полицию в пользу общественного посредничества, реабилитации и заглаживания вреда",
+          "de": "Gefängnisse und Strafpolizei zugunsten gemeinschaftlicher Mediation, Rehabilitation und Wiedergutmachung abschaffen",
+          "es": "Abolir las prisiones y la policía punitiva en favor de la mediación comunitaria, la rehabilitación y la reparación del daño",
+          "next": "restorative_justice"
         }
       ]
     },
@@ -2878,6 +2960,9 @@
     },
     {
       "id": "reputationalism"
+    },
+    {
+      "id": "restorative_justice"
     }
   ],
   "territorial_organization": [
@@ -2996,6 +3081,14 @@
           "de": "Ein dominantes imperiales Zentrum übt übergeordnete Hegemonie über autonome Vasallen und Protektorate aus",
           "es": "Un centro imperial dominante ejerce una hegemonía superior sobre vasallos y protectorados autónomos",
           "next": "suzerainty"
+        },
+        {
+          "en": "Grant cultural and linguistic communities self-governing councils across shared cities without drawing ethnic borders",
+          "uk": "Надати культурним і мовним спільнотам самоврядні ради у спільних містах без проведення етнічних кордонів",
+          "ru": "Предоставить культурным и языковым общинам самоуправляемые советы в общих городах без проведения этнических границ",
+          "de": "Kulturellen und sprachlichen Gemeinschaften eigene Selbstverwaltungsräte ohne ethnische Grenzziehungen gewähren",
+          "es": "Otorgar a las comunidades culturales y lingüísticas consejos de autogobierno sin trazar fronteras étnicas territoriales",
+          "next": "non_territorial_autonomy"
         }
       ]
     },
@@ -3054,6 +3147,9 @@
     },
     {
       "id": "patchwork"
+    },
+    {
+      "id": "non_territorial_autonomy"
     }
   ]
 }

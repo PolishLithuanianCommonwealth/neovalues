@@ -235,6 +235,80 @@
             text-align: center;
             margin-bottom: 10px;
         }
+        .modal-admin-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+        .modal-admin-actions button {
+            width: auto;
+            min-width: 150px;
+            padding: 9px 18px;
+            font-size: 13px;
+        }
+        .btn-danger {
+            border-color: #c0392b !important;
+            color: #e74c3c !important;
+        }
+        .btn-danger:hover {
+            background: rgba(231, 76, 60, 0.14) !important;
+        }
+        .compare-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr 120px 1fr;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+        .compare-row.same-axis {
+            border-color: rgba(46, 204, 113, 0.45);
+            background: rgba(46, 204, 113, 0.06);
+        }
+        .compare-side {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .compare-side.right {
+            justify-content: flex-end;
+            text-align: right;
+        }
+        .compare-side img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .compare-cat {
+            text-align: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .compare-badge-same {
+            display: inline-block;
+            margin-top: 3px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-size: 10px;
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
     </style>
 </head>
 <body>
@@ -254,7 +328,7 @@
     <div class="main-container" style="max-width: 1480px;">
         <div class="title-container">
             <h1>NeoValues</h1>
-            <span class="version-text">admin · v4.2</span>
+            <span class="version-text">admin · v4.4</span>
         </div>
 
         <!-- Login -->
@@ -292,6 +366,7 @@
                 <select id="filter-authority" onchange="renderTable()">
                     <option value="">All Authority</option>
                 </select>
+                <button id="compare-btn" onclick="openCompareModal()" disabled style="opacity:0.5">Compare Selected (0/2)</button>
                 <button onclick="exportCSV()">Export CSV</button>
             </div>
 
@@ -299,6 +374,7 @@
                 <table class="results-table">
                     <thead>
                         <tr>
+                            <th style="width:28px">Cmp</th>
                             <th>#</th>
                             <th>Name</th>
                             <th>Time</th>
@@ -327,7 +403,7 @@
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <div class="title-container" style="margin-bottom:0">
                 <h1 style="font-size:24px">NeoValues</h1>
-                <span class="version-text">v4.2</span>
+                <span class="version-text">v4.4</span>
             </div>
             <div class="modal-time" id="modal-time"></div>
             <div class="modal-icons" id="modal-icons"></div>
@@ -337,14 +413,29 @@
             <div class="modal-center">
                 <div class="modal-next-closest" id="modal-next-closest"></div>
             </div>
+            <div class="modal-admin-actions" id="modal-actions"></div>
             <div class="modal-who" id="modal-who"></div>
         </div>
     </div>
 
+    <!-- Side-by-Side Comparison Modal -->
+    <div class="modal-overlay" id="compare-modal" onclick="if(event.target===this)closeCompareModal()">
+        <div class="modal-content" style="max-width: 920px;">
+            <button class="modal-close" onclick="closeCompareModal()">&times;</button>
+            <div class="title-container" style="margin-bottom: 12px;">
+                <h1 style="font-size:24px">Side-by-Side Comparison</h1>
+            </div>
+            <div id="compare-header" style="display:grid;grid-template-columns:1fr 120px 1fr;gap:12px;text-align:center;align-items:center;margin-bottom:10px;"></div>
+            <div class="compare-grid" id="compare-grid"></div>
+        </div>
+    </div>
+
     <script src="data.js"></script>
+    <script src="share_card.js"></script>
     <script>
         let allData = [];
         let currentPw = '';
+        let selectedIds = [];
 
         function getValDisplayName(val) {
             if (!val) return '-';
@@ -609,7 +700,9 @@
             filtered.forEach((s) => {
                 const tr = document.createElement('tr');
                 tr.onclick = () => openModal(s);
+                const checked = selectedIds.includes(s.id) ? 'checked' : '';
                 tr.innerHTML = `
+                    <td onclick="event.stopPropagation()"><input type="checkbox" ${checked} onchange="toggleCompareSelect(${s.id}, this.checked)"></td>
                     <td>${s.id}</td>
                     <td style="color:#d4a574;font-weight:bold">${s.name ? escapeHtml(s.name) : '<span style="opacity:0.45">—</span>'}</td>
                     <td>${toEST(s.timestamp)}</td>
@@ -706,6 +799,15 @@
                 nextDiv.style.display = 'none';
             }
 
+            const actionsDiv = document.getElementById('modal-actions');
+            const permalink = (typeof NVShare !== 'undefined') ? NVShare.buildShareUrl(resultMap, 'results.html') : 'results.html';
+            if (actionsDiv) {
+                actionsDiv.innerHTML = `
+                    <button type="button" onclick="window.open('${escapeHtml(permalink)}', '_blank')">Open Permalink</button>
+                    <button type="button" class="btn-danger" onclick="deleteSubmission(${s.id})">Delete Submission</button>
+                `;
+            }
+
             const info = parseUA(s.user_agent);
             whoDiv.innerHTML = `
                 <div style="opacity:0.6;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Who could this be?</div>
@@ -740,8 +842,120 @@
             document.body.style.overflow = '';
         }
 
+        function toggleCompareSelect(id, isChecked) {
+            if (isChecked) {
+                if (!selectedIds.includes(id)) {
+                    if (selectedIds.length >= 2) selectedIds.shift();
+                    selectedIds.push(id);
+                }
+            } else {
+                selectedIds = selectedIds.filter(x => x !== id);
+            }
+            updateCompareBtn();
+            renderTable();
+        }
+
+        function updateCompareBtn() {
+            const btn = document.getElementById('compare-btn');
+            if (!btn) return;
+            btn.textContent = `Compare Selected (${selectedIds.length}/2)`;
+            btn.disabled = selectedIds.length !== 2;
+            btn.style.opacity = selectedIds.length === 2 ? '1' : '0.5';
+        }
+
+        function openCompareModal() {
+            if (selectedIds.length !== 2) return;
+            const a = allData.find(x => x.id === selectedIds[0]);
+            const b = allData.find(x => x.id === selectedIds[1]);
+            if (!a || !b) return;
+
+            const header = document.getElementById('compare-header');
+            const grid = document.getElementById('compare-grid');
+            const colA = (typeof labelColors !== 'undefined' && labelColors[a._ideology]) || '#7a7a7a';
+            const colB = (typeof labelColors !== 'undefined' && labelColors[b._ideology]) || '#7a7a7a';
+
+            const mapRow = (s) => ({
+                economics: s.economics,
+                resource_management: s.resource_management,
+                culture: s.culture,
+                authority: s.authority,
+                nation: s.nation,
+                foreign: s.foreign_policy,
+                technology: s.technology,
+                social_control: s.social_control,
+                territorial_organization: s.territorial_organization
+            });
+            const rA = mapRow(a);
+            const rB = mapRow(b);
+
+            let sameCount = 0;
+            categories.forEach(c => { if (rA[c] && rA[c] === rB[c]) sameCount++; });
+
+            header.innerHTML = `
+                <div>
+                    <div style="color:#d4a574;font-weight:700;font-size:17px">${escapeHtml(a.name || `#${a.id}`)}</div>
+                    <div style="display:inline-block;margin-top:6px;padding:5px 14px;border-radius:999px;font-size:13px;font-weight:700;color:#fff;background:${colA}">${escapeHtml(a._ideology || 'No exact match')}</div>
+                </div>
+                <div style="font-size:12px;color:var(--text-dim);font-weight:700">${sameCount}/${categories.length} SHARED</div>
+                <div>
+                    <div style="color:#d4a574;font-weight:700;font-size:17px">${escapeHtml(b.name || `#${b.id}`)}</div>
+                    <div style="display:inline-block;margin-top:6px;padding:5px 14px;border-radius:999px;font-size:13px;font-weight:700;color:#fff;background:${colB}">${escapeHtml(b._ideology || 'No exact match')}</div>
+                </div>
+            `;
+
+            grid.innerHTML = '';
+            categories.forEach(cat => {
+                const vA = rA[cat];
+                const vB = rB[cat];
+                const isSame = Boolean(vA && vA === vB);
+                const row = document.createElement('div');
+                row.className = 'compare-row' + (isSame ? ' same-axis' : '');
+                row.innerHTML = `
+                    <div class="compare-side">
+                        ${vA ? `<img src="icons/${cat}/${vA}.svg" onerror="this.style.display='none'">` : ''}
+                        <span>${escapeHtml(getValDisplayName(vA))}</span>
+                    </div>
+                    <div class="compare-cat">
+                        <div>${escapeHtml((categoryTitles && categoryTitles[cat]) || cat)}</div>
+                        ${isSame ? '<span class="compare-badge-same">Match</span>' : ''}
+                    </div>
+                    <div class="compare-side right">
+                        <span>${escapeHtml(getValDisplayName(vB))}</span>
+                        ${vB ? `<img src="icons/${cat}/${vB}.svg" onerror="this.style.display='none'">` : ''}
+                    </div>
+                `;
+                grid.appendChild(row);
+            });
+
+            document.getElementById('compare-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCompareModal() {
+            document.getElementById('compare-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        async function deleteSubmission(id) {
+            if (!confirm(`Delete submission #${id} permanently?`)) return;
+            try {
+                const res = await fetch(`/api/admin/results/${id}?pw=${encodeURIComponent(currentPw)}`, { method: 'DELETE' });
+                if (!res.ok) return;
+                allData = allData.filter(x => x.id !== id);
+                selectedIds = selectedIds.filter(x => x !== id);
+                closeModal();
+                populateStats({ count: allData.length });
+                populateFilters();
+                updateCompareBtn();
+                renderTable();
+            } catch (e) {}
+        }
+
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') {
+                closeModal();
+                closeCompareModal();
+            }
         });
 
         function exportCSV() {

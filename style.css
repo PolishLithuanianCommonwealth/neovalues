@@ -885,3 +885,132 @@ a:hover {
         max-height: 210px;
     }
 }
+
+
+/* --- Share Actions & Top-5 Closest Matches Drawer --- */
+.share-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.share-actions-row button {
+    width: auto;
+    min-width: 190px;
+    padding: 12px 24px;
+    font-size: 0.98rem;
+}
+
+#top-matches-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 540px;
+    margin: 14px auto 4px;
+}
+
+.top-matches-toggle {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-dim);
+    border-radius: 999px;
+    padding: 8px 22px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    width: auto;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--smooth-transition);
+}
+
+.top-matches-toggle:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-soft);
+}
+
+.top-matches-toggle .chevron {
+    transition: transform 0.25s ease;
+}
+
+.top-matches-toggle.open .chevron {
+    transform: rotate(180deg);
+}
+
+.top-matches-drawer {
+    display: none;
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-top: 12px;
+    box-sizing: border-box;
+    box-shadow: var(--soft-shadow);
+    flex-direction: column;
+    gap: 12px;
+}
+
+.top-matches-drawer.open {
+    display: flex;
+}
+
+.top-match-row {
+    text-decoration: none;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.top-match-row:hover {
+    background: var(--hover-shadow);
+}
+
+.top-match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.top-match-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-match-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.top-match-meta {
+    color: var(--text-dim);
+    font-size: 0.82rem;
+}
+
+.top-match-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.top-match-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+}

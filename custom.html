@@ -16,7 +16,7 @@
             <div class="top-section">
                 <div class="title-container">
                     <h1>NeoValues</h1>
-                    <span class="version-text">v4.2</span>
+                    <span class="version-text">v4.4</span>
                 </div>
                 <p class="custom-subtitle" data-i18n="customResults">Custom results</p>
                 <div id="results-container"></div>
@@ -25,8 +25,14 @@
             <div class="bottom-section">
                 <div id="label"></div>
                 <div id="secondary-label"></div>
+                <div id="top-matches-container"></div>
 
-                <div id="buttons" style="margin-top: 30px;">
+                <div class="share-actions-row" id="custom-share-actions" style="display: none;">
+                    <button type="button" onclick="NVShare.downloadShareCard(customResults, currentCustomLabel, currentCustomNext)" data-i18n="downloadImage">Download Image</button>
+                    <button type="button" onclick="NVShare.copyShareLink(customResults, this)" data-i18n="copyLink">Copy Share Link</button>
+                </div>
+
+                <div id="buttons" style="margin-top: 22px;">
                     <button type="button" onclick="resetCustomResults()" data-i18n="reset">Reset</button>
                     <button type="button" onclick="location.href='index.html'" data-i18n="backToMenu">Back to menu</button>
                 </div>
@@ -35,11 +41,15 @@
     </div>
 
     <script src="data.js"></script>
+    <script src="share_card.js"></script>
     <script>
-        let customResults = JSON.parse(localStorage.getItem('customQuizResults') || '{}');
+        let customResults = NVShare.readUrlResults() || JSON.parse(localStorage.getItem('customQuizResults') || '{}');
+        let currentCustomLabel = "No exact match";
+        let currentCustomNext = null;
 
         function saveCustomResults() {
             localStorage.setItem('customQuizResults', JSON.stringify(customResults));
+            NVShare.syncAddressBar(customResults);
         }
 
         function closeAllValueDropdowns() {
@@ -82,12 +92,17 @@
             const secondaryLabelDiv = document.getElementById('secondary-label');
             if (!labelDiv || !secondaryLabelDiv) return;
 
+            const shareRow = document.getElementById('custom-share-actions');
+            const topContainer = document.getElementById('top-matches-container');
             const hasAnySelection = Object.keys(customResults).length > 0;
             if (!hasAnySelection) {
                 labelDiv.style.display = 'none';
                 secondaryLabelDiv.style.display = 'none';
+                if (shareRow) shareRow.style.display = 'none';
+                if (topContainer) topContainer.style.display = 'none';
                 return;
             }
+            if (shareRow) shareRow.style.display = 'flex';
 
             labelDiv.style.display = 'inline-block';
 
@@ -206,15 +221,20 @@
 
             secondaryLabelDiv.innerHTML = '';
             secondaryLabelDiv.style.display = 'none';
+            currentCustomLabel = finalLabel;
+            currentCustomNext = null;
 
             if (scoredLabels.length > 0 && scoredLabels[0].matchPercentage > 0) {
                 const nextMatch = scoredLabels[0];
+                currentCustomNext = nextMatch;
                 secondaryLabelDiv.className = "label-bubble";
                 secondaryLabelDiv.style.display = "inline-block";
                 secondaryLabelDiv.style.borderColor = labelColors[nextMatch.label] || "#7a7a7a";
                 secondaryLabelDiv.style.color = labelColors[nextMatch.label] || "#7a7a7a";
                 secondaryLabelDiv.innerHTML = `<a href="description.html?id=${encodeURIComponent(nextMatch.label)}&type=ideology" style="color: inherit; text-decoration: none; display: block;">${I18n.t("nextClosestMatch")}: ${I18n.getIdeologyName(nextMatch.label)} (${nextMatch.identicalCount}/${nextMatch.totalRequired})</a>`;
             }
+
+            NVShare.renderTopMatches('top-matches-container', scoredLabels);
         }
 
         function renderCustomPage() {

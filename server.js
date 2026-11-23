@@ -61,6 +61,7 @@ const insertStmt = db.prepare(`
 
 const getAllStmt = db.prepare('SELECT * FROM submissions ORDER BY id DESC');
 const getCountStmt = db.prepare('SELECT COUNT(*) as count FROM submissions');
+const deleteStmt = db.prepare('DELETE FROM submissions WHERE id = ?');
 
 // --- Middleware ---
 app.use(express.json());
@@ -105,6 +106,22 @@ app.get('/api/admin/results', (req, res) => {
   const submissions = getAllStmt.all();
   const count = getCountStmt.get().count;
   res.json({ count, submissions });
+});
+
+// --- API: Delete Submission (password protected) ---
+app.delete('/api/admin/results/:id', (req, res) => {
+  const pw = req.query.pw;
+  if (pw !== ADMIN_PASSWORD) {
+    return res.status(403).json({ error: 'Wrong password' });
+  }
+
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({ error: 'Invalid submission id' });
+  }
+
+  const info = deleteStmt.run(id);
+  res.json({ ok: true, deleted: info.changes });
 });
 
 // --- Start ---

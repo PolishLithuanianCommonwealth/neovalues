@@ -1,3 +1,5 @@
 node_modules/
 results.db
+results.db-shm
+results.db-wal
 package-lock.json

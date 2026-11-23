@@ -28,7 +28,11 @@ const TRANSLATIONS = {
             "reset": "Reset",
             "clearSelection": "Clear",
             "enterName": "Enter your name to begin",
-            "namePlaceholder": "Your name"
+            "namePlaceholder": "Your name",
+            "downloadImage": "Download Image",
+            "copyLink": "Copy Share Link",
+            "linkCopied": "Link Copied!",
+            "topMatches": "Top 5 Closest Ideologies"
         },
         "categories": {
             "economics": "Economics",
@@ -198,7 +202,15 @@ const TRANSLATIONS = {
             "ochlocracy": "Ochlocracy",
             "council_planning": "Council Planning",
             "labor_vouchers": "Labor-Time Vouchers",
-            "proletarian_internationalism": "Proletarian Internationalism"
+            "proletarian_internationalism": "Proletarian Internationalism",
+            "gift_economy": "Gift Economy",
+            "commons_stewardship": "Commons Stewardship",
+            "proletarian_culture": "Proletarian Culture",
+            "vanguardism": "Vanguardism",
+            "cosmism": "Cosmism",
+            "digital_commons": "Digital Commons",
+            "restorative_justice": "Restorative Justice",
+            "non_territorial_autonomy": "Non-Territorial Autonomy"
         },
         "descriptions": {
             "National Syndicalism": "A synthesis of revolutionary syndicalism and integral nationalism. It advocates for a state organized into worker-run industrial corporations, replacing liberal democracy and class struggle with national unity and productive labor.",
@@ -602,7 +614,25 @@ const TRANSLATIONS = {
             "Situationism": "Formulated by the Situationist International (led by Guy Debord and Raoul Vaneigem), it critiques modern capitalism and bureaucracy as an alienating 'Society of the Spectacle' that reduces lived life to passive representation. It calls for avant-garde cultural subversion, the abolition of wage labor, and generalized self-management through workers' councils.",
             "Autonomist Marxism": "Originating in 1960s Italian Operaismo (associated with Mario Tronti, Antonio Negri, and Silvia Federici), it argues that working-class resistance actively drives capitalist technological restructuring rather than merely reacting to it. Emphasizing the 'refusal of work' and struggles across the wider 'social factory,' it seeks autonomous commons beyond both state and party control.",
             "Orthodox Marxism": "Codified during the Second International by theorists such as Karl Kautsky and the 1891 Erfurt Programme, it views industrial capitalism's internal contradictions as leading toward a working-class political majority. It advocates replacing bourgeois rule with a thoroughly democratic socialist republic and planned public ownership of large-scale industry.",
-            "Participatory Socialism": "Rooted in Michael Albert and Robin Hahnel's Participatory Economics ('Parecon') alongside Stephen Shalom's 'Parpolity,' it rejects both market competition and central bureaucratic planning. Production and allocation are negotiated iteratively by nested worker and consumer councils using balanced job complexes and effort-based consumption credits."
+            "Participatory Socialism": "Rooted in Michael Albert and Robin Hahnel's Participatory Economics ('Parecon') alongside Stephen Shalom's 'Parpolity,' it rejects both market competition and central bureaucratic planning. Production and allocation are negotiated iteratively by nested worker and consumer councils using balanced job complexes and effort-based consumption credits.",
+            "gift_economy": "An economic mode in which goods and services are given freely through generalized reciprocity and open hospitality without money, barter, or calculated debt. Studied in anthropology by Marcel Mauss and Marshall Sahlins, it inspires both communal anarchism and post-scarcity peer production.",
+            "commons_stewardship": "A resource-governance principle (analyzed by Elinor Ostrom and ecological Marxists) in which land, water, ecosystems, and civic infrastructure are held as non-saleable commons. Local user assemblies steward resources directly for long-term ecological regeneration rather than private rent or state profit.",
+            "proletarian_culture": "A revolutionary cultural theory (rooted in Alexander Bogdanov's Proletkult and Antonio Gramsci's counter-hegemony) holding that working-class emancipation requires dismantling bourgeois art, schooling, and ideology. It fosters collective, egalitarian cultural creation and polytechnic education.",
+            "vanguardism": "A revolutionary political principle in which a theoretically unified, disciplined class party organizes the most class-conscious layers of the proletariat to overthrow capitalism. Interpretations range from Leninist democratic centralism to Bordigist organic centralism.",
+            "cosmism": "A philosophical and scientific movement originating with Nikolai Fedorov, Alexander Bogdanov, and Konstantin Tsiolkovsky. It calls on united humanity to overcome disease, aging, and biological death through collective science while expanding conscious life across the cosmos.",
+            "digital_commons": "A technological paradigm prioritizing free and open-source software, open hardware, federated peer-to-peer networks, and universal knowledge access. It opposes proprietary intellectual-property monopolies and centralized platform surveillance in favor of shared digital infrastructure.",
+            "restorative_justice": "An abolitionist approach to social accountability that replaces prisons, retributive punishment, and state policing with community mediation and harm repair. It addresses the material and social roots of conflict to reintegrate individuals and heal affected communities.",
+            "non_territorial_autonomy": "A model theorized by Austromarxists Otto Bauer and Karl Renner alongside the Jewish Labour Bund, separating cultural self-rule from fixed geographic borders. Linguistic and cultural communities elect autonomous councils for education and culture across shared multi-ethnic cities.",
+            "Internationalist Communism": "Associated with Onorato Damen, Battaglia Comunista, and the Internationalist Communist Tendency within the Italian Communist Left, it rejects bourgeois democracy, unions, and state-capitalist 'socialism.' Unlike strict Bordigism, it opposes party substitutionism, holding that the revolutionary party provides political clarity while power belongs to autonomous workers' councils.",
+            "Camattism": "Developed by French theorist Jacques Camatte and the journal Invariance after breaking with the Italian Communist Left, it argues that capital has escaped human control to 'domesticate' humanity into an artificial material community. Achieving genuine human Gemeinwesen requires abandoning industrial productivism, wage labor, and all political rackets.",
+            "Austromarxism": "Led by Karl Renner, Otto Bauer, Max Adler, and Rudolf Hilferding in early 20th-century Vienna, it sought a third path between reformist social democracy and Bolshevism. It pairs socialized industry and municipal welfare ('Red Vienna') with non-territorial national-cultural autonomy across multinational societies.",
+            "Bundism": "The secular socialist movement of the General Jewish Labour Bund, anchored in the principle of Doikayt ('Hereness')—fighting for socialism alongside neighbors wherever workers live rather than pursuing territorial separatism. It combines militant trade unionism, Yiddish/minority cultural autonomy, and non-territorial federalism.",
+            "Bukharinism": "Associated with Bolshevik theorist Nikolai Bukharin and the Soviet Right Opposition, it favored preserving the New Economic Policy's alliance (smychka) between workers and peasants rather than Stalin's forced collectivization. It envisions growing into socialism gradually through rural cooperatives, state commanding heights, and balanced industrialization.",
+            "Cyber-Councilism": "A synthesis of Dutch-German Council Communism with cybernetic planning, open-source peer networks, and liberatory high technology. Rather than delegating authority to a technocratic elite, recallable workers' councils use real-time distributed computation to coordinate labor-time and commons allocation.",
+            "Biocosmism": "Inspired by early Soviet Anarcho-Biocosmism (Alexander Svyatogor) alongside Nikolai Fedorov and Alexander Bogdanov, it fuses social revolution with the scientific conquest of death and space. Its twin slogans—immortalism and interplanetarism—treat aging, scarcity, and gravity as material limits to be abolished collectively.",
+            "Neozapatismo": "The libertarian, indigenous-rooted socialism practiced by the EZLN in Chiapas since 1994 under the principle of Mandar Obedeciendo ('Lead by Obeying'). Blending Mayan communal land stewardship with horizontal popular assemblies, recallable Juntas de Buen Gobierno, and alter-globalist solidarity, it rejects seizing state power.",
+            "Libre Socialism": "An anti-capitalist digital-commons philosophy inspired by free-culture pioneers and commons-based peer production. It seeks to generalize the collaborative, non-proprietary logic of free and open-source software to material production, abolishing intellectual property rents and platform monopolies.",
+            "Platformism": "Formulated in 1926 by Ukrainian and Russian exiles around Nestor Makhno and Peter Arshinov (Dielo Truda) and echoed in Latin American Especifismo, it critiques informal synthesis anarchism. It advocates tightly coordinated anarchist federations bound by theoretical unity, tactical unity, and collective responsibility inside mass working-class struggles."
         }
     },
     "uk": {
@@ -650,7 +680,11 @@ const TRANSLATIONS = {
             "reset": "Скинути",
             "clearSelection": "Очистити",
             "enterName": "Введіть своє ім'я, щоб розпочати",
-            "namePlaceholder": "Ваше ім'я"
+            "namePlaceholder": "Ваше ім'я",
+            "downloadImage": "Завантажити зображення",
+            "copyLink": "Скопіювати посилання",
+            "linkCopied": "Скопійовано!",
+            "topMatches": "Топ-5 найближчих ідеологій"
         },
         "categories": {
             "economics": "Економіка",
@@ -820,7 +854,15 @@ const TRANSLATIONS = {
             "ochlocracy": "Охлократія",
             "council_planning": "Планування робітничих рад",
             "labor_vouchers": "Трудові квитанції",
-            "proletarian_internationalism": "Пролетарський інтернаціоналізм"
+            "proletarian_internationalism": "Пролетарський інтернаціоналізм",
+            "gift_economy": "Економіка дарування",
+            "commons_stewardship": "Самоуправління спільними благами",
+            "proletarian_culture": "Пролетарська культура",
+            "vanguardism": "Авангардизм",
+            "cosmism": "Космізм",
+            "digital_commons": "Цифрові спільні блага",
+            "restorative_justice": "Відновне правосуддя",
+            "non_territorial_autonomy": "Нетериторіальна автономія"
         },
         "descriptions": {
             "National Syndicalism": "Синтез революційного синдикалізму та інтегрального націоналізму. Ідеологія виступає за державу, організовану у вигляді промислових корпорацій, керованих робітниками, замінюючи ліберальну демократію та класову боротьбу національною єдністю і продуктивною працею.",
@@ -1224,7 +1266,25 @@ const TRANSLATIONS = {
             "Situationism": "Сформульований Ситуаціоністським інтернаціоналом (Гі Дебор, Рауль Ванейгем) напрям, що критикує сучасний капіталізм і бюрократію як відчужене «суспільство спектаклю», де живе життя підмінене пасивною репрезентацією. Він закликає до авангардної культурної субверсії, скасування найманої праці та загального самоуправління робітничих рад.",
             "Autonomist Marxism": "Напрям, що виник з італійського операїзму 1960-х років (Маріо Тронті, Антоніо Негрі, Сільвія Федерічі) і доводить, що опір робітничого класу сам змушує капітал до технологічної перебудови. Наголошуючи на «відмові від праці» та боротьбі в межах «соціальної фабрики», він прагне автономних спільних благ поза державою й партіями.",
             "Orthodox Marxism": "Кодифікований у добу Другого інтернаціоналу Карлом Каутським та Ерфуртською програмою 1891 року напрям, який розглядає внутрішні суперечності індустріального капіталізму як шлях до політичної більшості робітничого класу. Він виступає за заміну буржуазного панування послідовно демократичною соціалістичною республікою та плановою суспільною власністю на велику промисловість.",
-            "Participatory Socialism": "Заснований на моделі партисипативної економіки («Парекон») Майкла Альберта й Робіна Ганела та «Парполітії» Стівена Шалома напрям, що відкидає як ринкову конкуренцію, так і централізовану бюрократію. Виробництво й розподіл узгоджуються ітеративно радами працівників і споживачів із використанням збалансованих трудових комплексів."
+            "Participatory Socialism": "Заснований на моделі партисипативної економіки («Парекон») Майкла Альберта й Робіна Ганела та «Парполітії» Стівена Шалома напрям, що відкидає як ринкову конкуренцію, так і централізовану бюрократію. Виробництво й розподіл узгоджуються ітеративно радами працівників і споживачів із використанням збалансованих трудових комплексів.",
+            "gift_economy": "Економічний устрій, де блага й послуги передаються вільно на засадах взаємності та гостинності без грошей, бартеру чи боргових розрахунків. Описаний Марселем Моссом і Маршаллом Салінзом, він надихає як общинний анархізм, так і однорангове виробництво спільних благ.",
+            "commons_stewardship": "Принцип управління ресурсами (досліджений Елінор Остром та екомарксистами), за якого земля, вода, екосистеми й інфраструктура є невідчужуваним спільним надбанням. Місцеві збори користувачів керують ресурсами задля довгострокового екологічного відновлення, а не приватної ренти чи державного прибутку.",
+            "proletarian_culture": "Революційна культурна теорія (Олександр Богданов і «Пролеткульт», контргегемонія Антоніо Грамші), згідно з якою визволення робітничого класу вимагає подолання буржуазного мистецтва, школи й ідеології. Вона плекає колективну творчість і політехнічну освіту.",
+            "vanguardism": "Революційний політичний принцип, за якого теоретично згуртована класова партія організовує найсвідоміші верстви пролетаріату для повалення капіталізму. Трактування охоплюють як ленінський демократичний централізм, так і бордігістський органічний централізм.",
+            "cosmism": "Філософсько-науковий рух, започаткований Миколою Федоровим, Олександром Богдановим і Костянтином Ціолковським. Він закликає об'єднане людство подолати хвороби, старіння й біологічну смерть силою науки та поширити розумне життя у Всесвіті.",
+            "digital_commons": "Технологічна парадигма вільного й відкритого програмного та апаратного забезпечення, однорангових мереж і загального доступу до знань. Вона протистоїть монополіям інтелектуальної власності та корпоративному стеженню на користь спільної цифрової інфраструктури.",
+            "restorative_justice": "Аболіціоністський підхід до суспільної відповідальності, що замінює в'язниці, каральні репресії та державну поліцію громадським посередництвом і відшкодуванням шкоди. Він усуває соціальні причини конфліктів задля зцілення та реінтеграції громади.",
+            "non_territorial_autonomy": "Модель австромарксистів Отто Бауера й Карла Реннера та єврейського Бунду, що відокремлює культурне самоврядування від територіальних кордонів. Мовні й культурні спільноти обирають автономні ради для освіти й культури у спільних багатоетнічних містах.",
+            "Internationalist Communism": "Пов'язана з Онорато Даменом, Battaglia Comunista та Інтернаціоналістичною комуністичною тенденцією течія італійської лівиці, що відкидає буржуазну демократію, профспілки та державний капіталізм СРСР. На відміну від бордігізму, вона заперечує партійний субституціонізм: партія дає політичну ясність, але влада належить автономним робітничим радам.",
+            "Camattism": "Розроблена французьким теоретиком Жаком Каматтом і журналом Invariance течія, яка доводить, що капітал перетворився на автономну матеріальну спільноту й «одомашнив» людство. Досягнення справжнього людського Gemeinwesen вимагає відмови від індустріального продуктивізму, найманої праці та політичних угруповань.",
+            "Austromarxism": "Очолювана Карлом Реннером, Отто Бауером, Максом Адлером і Рудольфом Гільфердінгом у Відні початку ХХ століття школа, що шукала шлях між реформізмом і більшовизмом. Вона поєднує усуспільнення промисловості й муніципальний добробут («Червоний Відень») із нетериторіальною національно-культурною автономією.",
+            "Bundism": "Світський соціалістичний рух Загального єврейського робітничого союзу (Бунду), заснований на принципі «Дойкайт» («тутешність») — боротьбі за соціалізм пліч-о-пліч із сусідами там, де живуть робітники, без територіального сепаратизму. Він поєднує бойовий профспілковий рух із культурною автономією меншин.",
+            "Bukharinism": "Пов'язана з Миколою Бухаріним і Правою опозицією в РКП(б) течія, що обстоювала збереження НЕПу та союзу робітників і селян замість примусової сталінської колективізації. Вона передбачає поступове вростання в соціалізм через сільські кооперативи, державні командні висоти та збалансовану індустріалізацію.",
+            "Cyber-Councilism": "Синтез нідерландсько-німецького комунізму робітничих рад із кібернетичним плануванням, вільними цифровими мережами та визвольними високими технологіями. Замість технократичної еліти відкличні ради працівників використовують розподілені обчислення для координації робочого часу й спільних ресурсів.",
+            "Biocosmism": "Натхненний ранньорадянським анархо-біокосмізмом (Олександр Святогор), Миколою Федоровим і Олександром Богдановим напрям, що поєднує соціальну революцію з науковою перемогою над смертю й освоєнням космосу. Його гасла — імморталізм та інтерпланетаризм — трактують старіння й дефіцит як матеріальні межі, які слід подолати спільно.",
+            "Neozapatismo": "Лібертарний індіанський соціалізм САПН (EZLN) у Чіапасі з 1994 року за принципом Mandar Obedeciendo («Керувати, підкоряючись громаді»). Поєднуючи общинне землекористування майя, горизонтальні народні збори, відкличні ради доброго врядування та альтерглобалізм, він відкидає захоплення державної влади.",
+            "Libre Socialism": "Антикапіталістична філософія цифрових спільних благ, натхненна рухом вільного програмного забезпечення та одноранговим виробництвом. Вона прагне поширити відкриту некомерційну співпрацю на матеріальне виробництво, скасовуючи ренту інтелектуальної власності й платформні монополії.",
+            "Platformism": "Сформульована 1926 року Нестором Махном і Петром Аршиновим («Дело Труда») та розвинена латиноамериканським еспесифізмом течія, що критикує неформальний анархізм синтезу. Вона обстоює згуртовані федерації анархістів на засадах теоретичної й тактичної єдності та колективної відповідальності в масовій класовій боротьбі."
         },
         "ideologyGroups": {
             "Third Position": "Третій шлях",
@@ -1489,7 +1549,17 @@ const TRANSLATIONS = {
             "Situationism": "Ситуаціонізм",
             "Autonomist Marxism": "Автономістський марксизм",
             "Orthodox Marxism": "Ортодоксальний марксизм",
-            "Participatory Socialism": "Партисипативний соціалізм"
+            "Participatory Socialism": "Партисипативний соціалізм",
+            "Internationalist Communism": "Інтернаціоналістичний комунізм",
+            "Camattism": "Каматтізм",
+            "Austromarxism": "Австромарксизм",
+            "Bundism": "Бундизм",
+            "Bukharinism": "Бухарінізм",
+            "Cyber-Councilism": "Кібер-радянський комунізм",
+            "Biocosmism": "Біокосмізм",
+            "Neozapatismo": "Неосапатизм",
+            "Libre Socialism": "Вільний цифровий соціалізм",
+            "Platformism": "Платформізм"
         }
     },
     "ru": {
@@ -1537,7 +1607,11 @@ const TRANSLATIONS = {
             "reset": "Сбросить",
             "clearSelection": "Очистить",
             "enterName": "Введите ваше имя, чтобы начать",
-            "namePlaceholder": "Ваше имя"
+            "namePlaceholder": "Ваше имя",
+            "downloadImage": "Скачать изображение",
+            "copyLink": "Скопировать ссылку",
+            "linkCopied": "Ссылка скопирована!",
+            "topMatches": "Топ-5 ближайших идеологий"
         },
         "categories": {
             "economics": "Экономика",
@@ -1707,7 +1781,15 @@ const TRANSLATIONS = {
             "ochlocracy": "Охлократия",
             "council_planning": "Планирование рабочих советов",
             "labor_vouchers": "Трудовые квитанции",
-            "proletarian_internationalism": "Пролетарский интернационализм"
+            "proletarian_internationalism": "Пролетарский интернационализм",
+            "gift_economy": "Экономика дарения",
+            "commons_stewardship": "Управление общим достоянием",
+            "proletarian_culture": "Пролетарская культура",
+            "vanguardism": "Авангардизм",
+            "cosmism": "Космизм",
+            "digital_commons": "Цифровое общее достояние",
+            "restorative_justice": "Восстановительное правосудие",
+            "non_territorial_autonomy": "Нетерриториальная автономия"
         },
         "descriptions": {
             "National Syndicalism": "Синтез революционного синдикализма и интегрального национализма. Идеология выступает за государство, организованное в виде промышленных корпораций, управляемых рабочими, заменяя либеральную демократию и классовую борьбу национальным единством и производительным трудом.",
@@ -2111,7 +2193,25 @@ const TRANSLATIONS = {
             "Situationism": "Сформулированное Ситуационистским интернационалом (Ги Дебор, Рауль Ванейгем) течение, критикующее современный капитализм и бюрократию как отчуждённое «общество спектакля», подменяющее живую жизнь пассивным созерцанием товаров. Оно призывает к авангардной культурной субверсии, отмене наёмного труда и всеобщему самоуправлению рабочих советов.",
             "Autonomist Marxism": "Возникшее из итальянского операизма 1960-х годов (Марио Тронти, Антонио Негри, Сильвия Федеричи) направление, доказывающее, что сопротивление рабочего класса активно вынуждает капитал к технологической перестройке. Делая упор на «отказ от труда» и борьбу во всей «социальной фабрике», оно стремится к автономным общим благам вне государства и партий.",
             "Orthodox Marxism": "Кодифицированное в эпоху Второго интернационала Карлом Каутским и Эрфуртской программой 1891 года направление, рассматривающее внутренние противоречия индустриального капитализма как путь к завоеванию политического большинства рабочим классом. Оно выступает за замену буржуазного господства последовательно демократической социалистической республикой и плановой общественной собственностью на крупную промышленность.",
-            "Participatory Socialism": "Основанное на партисипативной экономике («Парекон») Майкла Альберта и Робина Ханела и «Парполитии» Стивена Шалома течение, отвергающее как рыночную конкуренцию, так и централизованную бюрократию. Производство и распределение согласуются итеративно советами работников и потребителей с использованием сбалансированных трудовых комплексов."
+            "Participatory Socialism": "Основанное на партисипативной экономике («Парекон») Майкла Альберта и Робина Ханела и «Парполитии» Стивена Шалома течение, отвергающее как рыночную конкуренцию, так и централизованную бюрократию. Производство и распределение согласуются итеративно советами работников и потребителей с использованием сбалансированных трудовых комплексов.",
+            "gift_economy": "Экономический уклад, при котором блага и услуги передаются свободно на основе взаимности и гостеприимства без денег, бартера и долгового расчёта. Исследованный Марселем Моссом и Маршаллом Салинзом, он вдохновляет как общинный анархизм, так и одноранговое производство общих благ.",
+            "commons_stewardship": "Принцип управления ресурсами (исследованный Элинор Остром и экомарксистами), при котором земля, вода, экосистемы и инфраструктура являются неотчуждаемым общим достоянием. Местные собрания пользователей управляют ресурсами ради экологического воспроизводства, а не частной ренты или госприбыли.",
+            "proletarian_culture": "Революционная культурная теория (Александр Богданов и «Пролеткульт», контргегемония Антонио Грамши), утверждающая, что освобождение рабочего класса требует преодоления буржуазного искусства, школы и идеологии. Она развивает коллективное творчество и политехническое образование.",
+            "vanguardism": "Революционный политический принцип, при котором теоретически сплочённая классовая партия организует передовые слои пролетариата для свержения капитализма. Трактовки включают как ленинский демократический централизм, так и бордигистский органический централизм.",
+            "cosmism": "Философско-научное течение, восходящее к Николаю Фёдорову, Александру Богданову и Константину Циолковскому. Оно призывает объединённое человечество победить болезни, старение и биологическую смерть силой науки и распространить разумную жизнь во Вселенной.",
+            "digital_commons": "Технологическая парадигма свободного и открытого программного и аппаратного обеспечения, пиринговых сетей и всеобщего доступа к знаниям. Она противостоит монополиям интеллектуальной собственности и платформенной слежке во имя общей цифровой инфраструктуры.",
+            "restorative_justice": "Аболиционистский подход к общественной ответственности, заменяющий тюрьмы, карательные репрессии и полицию общественным посредничеством и заглаживанием вреда. Он устраняет социальные корни конфликтов ради исцеления и реинтеграции общины.",
+            "non_territorial_autonomy": "Модель австромарксистов Отто Бауэра и Карла Реннера и еврейского Бунда, отделяющая культурное самоуправление от территориальных границ. Языковые и культурные общины избирают автономные советы по образованию и культуре в общих многонациональных городах.",
+            "Internationalist Communism": "Связанное с Онорато Даменом, Battaglia Comunista и Интернационалистической коммунистической тенденцией крыло итальянской левой, отвергающее буржуазную демократию, профсоюзы и госкапитализм СССР. В отличие от бордигизма, оно отвергает подмену класса партией: партия даёт политический компас, но власть принадлежит автономным рабочим советам.",
+            "Camattism": "Разработанное французским теоретиком Жаком Каматтом и журналом Invariance направление, утверждающее, что капитал превратился в автономную материальную общность и «одомашнил» человечество. Обретение подлинного человеческого Gemeinwesen требует отказа от индустриального продуктивизма, наёмного труда и политических клик.",
+            "Austromarxism": "Возглавлявшаяся Карлом Реннером, Отто Бауэром, Максом Адлером и Рудольфом Гильфердингом в Вене начала XX века школа, искавшая путь между реформизмом и большевизмом. Она сочетает обобществление промышленности и муниципальное благосостояние («Красная Вена») с нетерриториальной национально-культурной автономией.",
+            "Bundism": "Светское социалистическое движение Всеобщего еврейского рабочего союза (Бунда), основанное на принципе «Дойкайт» («здешность») — борьбе за социализм бок о бок с соседями там, где живут рабочие, без территориального сепаратизма. Оно соединяет боевой профсоюзный социализм с культурной автономией меньшинств.",
+            "Bukharinism": "Связанное с Николаем Бухариным и Правой оппозицией в ВКП(б) течение, выступавшее за сохранение НЭПа и смычки рабочих и крестьян вместо насильственной сталинской коллективизации. Оно предполагает постепенное врастание в социализм через сельскую кооперацию, госсектор и сбалансированную индустриализацию.",
+            "Cyber-Councilism": "Синтез голландско-немецкого коммунизма рабочих советов с кибернетическим планированием, свободными пиринговыми сетями и освободительными высокими технологиями. Вместо технократической элиты отзываемые рабочие советы используют распределённые вычисления для координации рабочего времени и общих ресурсов.",
+            "Biocosmism": "Вдохновлённое раннесоветским анархо-биокосмизмом (Александр Святогор), Николаем Фёдоровым и Александром Богдановым течение, соединяющее социальную революцию с научной победой над смертью и освоением космоса. Его лозунги — иммортализм и интерпланетаризм — рассматривают старение и дефицит как преодолимые материальные пределы.",
+            "Neozapatismo": "Либертарный индейский социализм САНО (EZLN) в Чьяпасе с 1994 года, основанный на принципе Mandar Obedeciendo («Управлять, подчиняясь общине»). Сочетая общинное землепользование майя, горизонтальные собрания, отзываемые советы доброго правления и альтерглобализм, он отвергает захват государственной власти.",
+            "Libre Socialism": "Антикапиталистическая философия цифрового общего достояния, вдохновлённая движением свободного ПО и одноранговым совместным производством. Она стремится распространить открытую некоммерческую кооперацию на материальное производство, упраздняя ренту интеллектуальной собственности и монополии платформ.",
+            "Platformism": "Сформулированное в 1926 году Нестором Махно и Петром Аршиновым («Дело Труда») и развитое латиноамериканским эспесифизмом течение, критикующее рыхлый анархизм синтеза. Оно выступает за сплочённые федерации анархистов на основе теоретического и тактического единства и коллективной ответственности в массовой классовой борьбе."
         },
         "ideologyGroups": {
             "Third Position": "Третий путь",
@@ -2376,7 +2476,17 @@ const TRANSLATIONS = {
             "Situationism": "Ситуационизм",
             "Autonomist Marxism": "Автономистский марксизм",
             "Orthodox Marxism": "Ортодоксальный марксизм",
-            "Participatory Socialism": "Партисипативный социализм"
+            "Participatory Socialism": "Партисипативный социализм",
+            "Internationalist Communism": "Интернационалистический коммунизм",
+            "Camattism": "Каматтизм",
+            "Austromarxism": "Австромарксизм",
+            "Bundism": "Бундизм",
+            "Bukharinism": "Бухаринизм",
+            "Cyber-Councilism": "Кибер-советизм",
+            "Biocosmism": "Биокосмизм",
+            "Neozapatismo": "Неосапатизм",
+            "Libre Socialism": "Свободный цифровой социализм",
+            "Platformism": "Платформизм"
         }
     },
     "de": {
@@ -2424,7 +2534,11 @@ const TRANSLATIONS = {
             "reset": "Zurücksetzen",
             "clearSelection": "Leeren",
             "enterName": "Gib deinen Namen ein, um zu beginnen",
-            "namePlaceholder": "Dein Name"
+            "namePlaceholder": "Dein Name",
+            "downloadImage": "Bild herunterladen",
+            "copyLink": "Link kopieren",
+            "linkCopied": "Link kopiert!",
+            "topMatches": "Top 5 ähnlichste Ideologien"
         },
         "categories": {
             "economics": "Wirtschaft",
@@ -2594,7 +2708,15 @@ const TRANSLATIONS = {
             "ochlocracy": "Ochlokratie",
             "council_planning": "Räteplanung",
             "labor_vouchers": "Arbeitszeitgutscheine",
-            "proletarian_internationalism": "Proletarischer Internationalismus"
+            "proletarian_internationalism": "Proletarischer Internationalismus",
+            "gift_economy": "Schenkökonomie",
+            "commons_stewardship": "Allmende-Selbstverwaltung",
+            "proletarian_culture": "Proletarische Kultur",
+            "vanguardism": "Avantgardismus",
+            "cosmism": "Kosmismus",
+            "digital_commons": "Digitale Allmende",
+            "restorative_justice": "Restaurative Justiz",
+            "non_territorial_autonomy": "Nicht-territoriale Autonomie"
         },
         "ideologyGroups": {
             "Third Position": "Dritte Position",
@@ -2859,7 +2981,17 @@ const TRANSLATIONS = {
             "Situationism": "Situationismus",
             "Autonomist Marxism": "Autonomer Marxismus",
             "Orthodox Marxism": "Orthodoxer Marxismus",
-            "Participatory Socialism": "Partizipatorischer Sozialismus"
+            "Participatory Socialism": "Partizipatorischer Sozialismus",
+            "Internationalist Communism": "Internationalistischer Kommunismus",
+            "Camattism": "Camattismus",
+            "Austromarxism": "Austromarxismus",
+            "Bundism": "Bundismus",
+            "Bukharinism": "Bucharinismus",
+            "Cyber-Councilism": "Kyber-Rätekommunismus",
+            "Biocosmism": "Biokosmismus",
+            "Neozapatismo": "Neozapatismus",
+            "Libre Socialism": "Freier Digitalsozialismus",
+            "Platformism": "Plattformismus"
         },
         "descriptions": {
             "National Syndicalism": "Eine Synthese aus revolutionärem Syndikalismus und integralem Nationalismus. Sie befürwortet einen in arbeitnehmerverwaltete Industriekorporationen gegliederten Staat, der liberale Demokratie und Klassenkampf durch nationale Einheit und produktive Arbeit ersetzt.",
@@ -3263,7 +3395,25 @@ const TRANSLATIONS = {
             "Situationism": "Formuliert von der Situationistischen Internationale (Guy Debord, Raoul Vaneigem), kritisiert er den modernen Kapitalismus als entfremdete ‚Gesellschaft des Spektakels‘, die gelebtes Leben auf passiven Warenkonsum reduziert. Er fordert avantgardistische Kultursubversion, die Abschaffung der Lohnarbeit und allgemeine Selbstverwaltung durch Arbeiterräte.",
             "Autonomist Marxism": "Entstanden aus dem italienischen Operaismus der 1960er Jahre (Mario Tronti, Antonio Negri, Silvia Federici), argumentiert er, dass der Arbeiterwiderstand die kapitalistische Umstrukturierung aktiv vorantreibt. Mit Fokus auf die ‚Verweigerung der Arbeit‘ und Kämpfe in der ‚gesellschaftlichen Fabrik‘ strebt er autonome Gemeingüter jenseits von Staat und Partei an.",
             "Orthodox Marxism": "Kodifiziert in der Zweiten Internationale durch Theoretiker wie Karl Kautsky und das Erfurter Programm von 1891, sieht er in den inneren Widersprüchen des Industriekapitalismus den Weg zu einer politischen Mehrheit der Arbeiterklasse. Er fordert die Ersetzung bürgerlicher Herrschaft durch eine konsequent demokratische sozialistische Republik und planmäßiges Gemeineigentum an der Großindustrie.",
-            "Participatory Socialism": "Verwurzelt in Michael Alberts und Robin Hahnels Partizipatorischer Ökonomie (‚Parecon‘) sowie Stephen Shaloms ‚Parpolity‘, lehnt er sowohl Marktwettbewerb als auch zentrale Planbürokratie ab. Produktion und Verteilung werden iterativ von verschachtelten Arbeiter- und Konsumentenräten mit ausgewogenen Tätigkeitskomplexen ausgehandelt."
+            "Participatory Socialism": "Verwurzelt in Michael Alberts und Robin Hahnels Partizipatorischer Ökonomie (‚Parecon‘) sowie Stephen Shaloms ‚Parpolity‘, lehnt er sowohl Marktwettbewerb als auch zentrale Planbürokratie ab. Produktion und Verteilung werden iterativ von verschachtelten Arbeiter- und Konsumentenräten mit ausgewogenen Tätigkeitskomplexen ausgehandelt.",
+            "gift_economy": "Eine Wirtschaftsform, in der Güter und Dienste durch allgemeine Gegenseitigkeit und offene Gastfreundschaft ohne Geld, Tauschhandel oder Schuldenrechnung frei weitergegeben werden. Von Marcel Mauss und Marshall Sahlins erforscht, inspiriert sie sowohl den kommunalen Anarchismus als auch Peer-Produktion nach der Knappheit.",
+            "commons_stewardship": "Ein Prinzip der Ressourcenverwaltung (untersucht von Elinor Ostrom und Ökomarxisten), bei dem Boden, Wasser, Ökosysteme und Infrastruktur als unverkäufliche Allmende gehalten werden. Lokale Nutzerversammlungen verwalten Ressourcen direkt für langfristige ökologische Regeneration statt für Privatrente oder Staatsgewinn.",
+            "proletarian_culture": "Eine revolutionäre Kulturtheorie (Alexander Bogdanows Proletkult und Antonio Gramscis Gegenhegemonie), wonach die Emanzipation der Arbeiterklasse den Bruch mit bürgerlicher Kunst, Schule und Ideologie erfordert. Sie fördert kollektives Kulturschaffen und polytechnische Bildung.",
+            "vanguardism": "Ein revolutionäres Politikprinzip, bei dem eine theoretisch geeinte, disziplinierte Klassenpartei die klassenbewusstesten Schichten des Proletariats zum Sturz des Kapitalismus organisiert. Die Ausprägungen reichen vom leninistischen demokratischen Zentralismus bis zum organischen Zentralismus Bordigas.",
+            "cosmism": "Eine philosophisch-wissenschaftliche Strömung um Nikolai Fjodorow, Alexander Bogdanow und Konstantin Ziolkowski. Sie ruft die vereinte Menschheit dazu auf, Krankheit, Altern und biologischen Tod wissenschaftlich zu überwinden und bewusstes Leben im Kosmos auszudehnen.",
+            "digital_commons": "Ein Technologieparadigma freier und quelloffener Software, offener Hardware, föderierter Peer-to-Peer-Netze und freien Wissenszugangs. Es bekämpft geistige Eigentumsmonopole und Plattformüberwachung zugunsten gemeinschaftlicher digitaler Infrastruktur.",
+            "restorative_justice": "Ein abolitionistischer Ansatz sozialer Verantwortung, der Gefängnisse, Vergeltungsstrafen und Staatspolizei durch gemeinschaftliche Mediation und Wiedergutmachung ersetzt. Er setzt an den materiellen und sozialen Wurzeln von Konflikten an, um Betroffene zu heilen und Gemeinschaften zu reintegrieren.",
+            "non_territorial_autonomy": "Ein von den Austromarxisten Otto Bauer und Karl Renner sowie dem Jüdischen Arbeiterbund entwickeltes Modell, das kulturelle Selbstverwaltung von territorialen Grenzen trennt. Sprach- und Kulturgemeinschaften wählen autonome Räte für Bildung und Kultur in gemeinsamen multiethnischen Städten.",
+            "Internationalist Communism": "Verbunden mit Onorato Damen, Battaglia Comunista und der Internationalistischen Kommunistischen Tendenz der italienischen Linken, verwirft er bürgerliche Demokratie, Gewerkschaften und den Staatskapitalismus der UdSSR. Anders als der strenge Bordigismus lehnt er Parteisubstitutionismus ab: Die Partei gibt politische Klarheit, während die Macht autonomen Arbeiterräten gehört.",
+            "Camattism": "Entwickelt vom französischen Theoretiker Jacques Camatte und der Zeitschrift Invariance, argumentiert er, dass sich das Kapital verselbständigt und die Menschheit ‚domestiziert‘ hat. Wahres menschliches Gemeinwesen erfordert den Bruch mit industriellem Produktivismus, Lohnarbeit und allen politischen Apparaten.",
+            "Austromarxism": "Angeführt von Karl Renner, Otto Bauer, Max Adler und Rudolf Hilferding im Wien des frühen 20. Jahrhunderts, suchte er einen Weg zwischen Reformismus und Bolschewismus. Er verbindet vergesellschaftete Industrie und kommunale Wohlfahrt (‚Rotes Wien‘) mit nicht-territorialer national-kultureller Autonomie.",
+            "Bundism": "Die säkulare sozialistische Bewegung des Allgemeinen Jüdischen Arbeiterbundes, verankert im Prinzip der Doikayt (‚Hiesigkeit‘) – dem gemeinsamen Kampf für den Sozialismus vor Ort statt territorialem Separatismus. Er verbindet kämpferische Gewerkschaftsarbeit mit kultureller Minderheitenautonomie und nicht-territorialem Föderalismus.",
+            "Bukharinism": "Verbunden mit Nikolai Bucharin und der Rechten Opposition in der KPdSU, befürwortete er die Fortführung der Neuen Ökonomischen Politik und des Arbeiter-Bauern-Bündnisses statt Stalins Zwangskollektivierung. Er setzt auf ein schrittweises Hineinwachsen in den Sozialismus über Agrargenossenschaften, staatliche Schlüsselindustrien und ausgewogenes Wachstum.",
+            "Cyber-Councilism": "Eine Synthese des deutsch-niederländischen Rätekommunismus mit kybernetischer Planung, freien Peer-to-Peer-Netzen und emanzipatorischer Hochtechnologie. Statt einer Technokratenelite nutzen jederzeit abberufbare Arbeiterräte verteilte Echtzeitberechnung zur Koordination von Arbeitszeit und Allmende.",
+            "Biocosmism": "Inspiriert vom frühsowjetischen Anarcho-Biokosmismus (Alexander Swjatogor) sowie Nikolai Fjodorow und Alexander Bogdanow, verschmilzt er soziale Revolution mit der wissenschaftlichen Überwindung des Todes und der Raumfahrt. Seine Losungen – Immortalismus und Interplanetarismus – begreifen Altern und Mangel als kollektiv aufzuhebende Schranken.",
+            "Neozapatismo": "Der seit 1994 von der EZLN in Chiapas praktizierte libertäre, indigen verwurzelte Sozialismus nach dem Grundsatz Mandar Obedeciendo (‚Gehorchend befehlen‘). Er verbindet indigene Allmendewirtschaft, horizontale Volksversammlungen, abberufbare Räte der Guten Regierung und Alter-Globalismus ohne Streben nach Staatsmacht.",
+            "Libre Socialism": "Eine antikapitalistische Philosophie der digitalen Allmende, inspiriert von Freier Software und kollaborativer Peer-Produktion. Sie überträgt die offene, eigentumsfreie Kooperation freier Wissensgüter auf die materielle Produktion und schafft geistige Eigentumsrenten sowie Plattformmonopole ab.",
+            "Platformism": "1926 von Nestor Machno und Pjotr Arschinow (Dielo Truda) formuliert und im lateinamerikanischen Especifismo weitergeführt, kritisiert er den lockeren Synthese-Anarchismus. Er fordert organisatorisch geeinte anarchistische Föderationen mit theoretischer und taktischer Einheit sowie kollektiver Verantwortung in den Massenkämpfen."
         }
     },
     "es": {
@@ -3311,7 +3461,11 @@ const TRANSLATIONS = {
             "reset": "Reiniciar",
             "clearSelection": "Limpiar",
             "enterName": "Introduce tu nombre para comenzar",
-            "namePlaceholder": "Tu nombre"
+            "namePlaceholder": "Tu nombre",
+            "downloadImage": "Descargar imagen",
+            "copyLink": "Copiar enlace",
+            "linkCopied": "¡Enlace copiado!",
+            "topMatches": "Top 5 ideologías más cercanas"
         },
         "categories": {
             "economics": "Economía",
@@ -3481,7 +3635,15 @@ const TRANSLATIONS = {
             "ochlocracy": "Oclocracia",
             "council_planning": "Planificación Consejista",
             "labor_vouchers": "Bonos de Tiempo de Trabajo",
-            "proletarian_internationalism": "Internacionalismo Proletario"
+            "proletarian_internationalism": "Internacionalismo Proletario",
+            "gift_economy": "Economía del Don",
+            "commons_stewardship": "Custodia de los Comunes",
+            "proletarian_culture": "Cultura Proletaria",
+            "vanguardism": "Vanguardismo",
+            "cosmism": "Cosmismo",
+            "digital_commons": "Comunes Digitales",
+            "restorative_justice": "Justicia Restaurativa",
+            "non_territorial_autonomy": "Autonomía No Territorial"
         },
         "descriptions": {
             "National Syndicalism": "Una síntesis de sindicalismo revolucionario y nacionalismo integral. Aboga por un Estado organizado en corporaciones industriales dirigidas por los trabajadores, reemplazando la democracia liberal y la lucha de clases por la unidad nacional y el trabajo productivo.",
@@ -3885,7 +4047,25 @@ const TRANSLATIONS = {
             "Situationism": "Formulado por la Internacional Situacionista (Guy Debord y Raoul Vaneigem), critica el capitalismo moderno y la burocracia como una alienante 'Sociedad del Espectáculo' que reduce la vida vivida al consumo pasivo de representaciones. Propugna la subversión cultural vanguardista, la abolición del trabajo asalariado y la autogestión generalizada mediante consejos obreros.",
             "Autonomist Marxism": "Originado en el Operaismo italiano de los años sesenta (Mario Tronti, Antonio Negri, Silvia Federici), sostiene que la resistencia obrera impulsa activamente la reestructuración tecnológica capitalista en lugar de limitarse a reaccionar ante ella. Destacando el 'rechazo del trabajo' en toda la 'fábrica social', busca bienes comunes autónomos más allá del Estado y del partido.",
             "Orthodox Marxism": "Codificado durante la Segunda Internacional por teóricos como Karl Kautsky y el Programa de Erfurt de 1891, concibe las contradicciones internas del capitalismo industrial como el camino hacia una mayoría política obrera. Defiende sustituir el dominio burgués por una república socialista plenamente democrática y la propiedad pública planificada de la gran industria.",
-            "Participatory Socialism": "Basado en la Economía Participativa ('Parecon') de Michael Albert y Robin Hahnel junto con la 'Parpolity' de Stephen Shalom, rechaza tanto la competencia de mercado como la planificación burocrática central. La producción y la asignación se negocian iterativamente en consejos anidados de trabajadores y consumidores con complejos laborales equilibrados."
+            "Participatory Socialism": "Basado en la Economía Participativa ('Parecon') de Michael Albert y Robin Hahnel junto con la 'Parpolity' de Stephen Shalom, rechaza tanto la competencia de mercado como la planificación burocrática central. La producción y la asignación se negocian iterativamente en consejos anidados de trabajadores y consumidores con complejos laborales equilibrados.",
+            "gift_economy": "Un modo económico en el que los bienes y servicios se entregan libremente mediante reciprocidad generalizada y hospitalidad abierta sin dinero, trueque ni deuda calculada. Estudiado por Marcel Mauss y Marshall Sahlins, inspira tanto al anarquismo comunal como a la producción entre pares pos-escasez.",
+            "commons_stewardship": "Un principio de gobernanza de recursos (analizado por Elinor Ostrom y el ecomarxismo) donde la tierra, el agua, los ecosistemas y la infraestructura se mantienen como bienes comunes inalienables. Asambleas locales de usuarios los custodian directamente para la regeneración ecológica a largo plazo.",
+            "proletarian_culture": "Una teoría cultural revolucionaria (basada en el Proletkult de Aleksandr Bogdánov y la contrahegemonía de Antonio Gramsci) que sostiene que la emancipación obrera exige desmontar el arte, la escuela y la ideología burguesas. Fomenta la creación colectiva igualitaria y la educación politécnica.",
+            "vanguardism": "Un principio político revolucionario en el que un partido de clase disciplinado y teóricamente unificado organiza a las capas más conscientes del proletariado para derrocar al capitalismo. Sus variantes abarcan desde el centralismo democrático leninista hasta el centralismo orgánico bordiguista.",
+            "cosmism": "Un movimiento filosófico y científico originado en Nikolái Fiódorov, Aleksandr Bogdánov y Konstantín Tsiolkovski. Llama a la humanidad unida a vencer la enfermedad, el envejecimiento y la muerte biológica mediante la ciencia colectiva mientras expande la vida consciente por el cosmos.",
+            "digital_commons": "Un paradigma tecnológico que prioriza el software libre y de código abierto, el hardware abierto, las redes federadas entre pares y el acceso universal al conocimiento. Se opone a los monopolios de propiedad intelectual y la vigilancia de plataformas en favor de una infraestructura digital común.",
+            "restorative_justice": "Un enfoque abolicionista de responsabilidad social que reemplaza las prisiones, el castigo retributivo y la policía estatal por la mediación comunitaria y la reparación del daño. Aborda las raíces materiales y sociales del conflicto para sanar y reintegrar a las comunidades.",
+            "non_territorial_autonomy": "Un modelo teorizado por los austromarxistas Otto Bauer y Karl Renner junto con el Bund judío, que separa el autogobierno cultural de las fronteras geográficas. Las comunidades lingüísticas y culturales eligen consejos autónomos para educación y cultura en ciudades multiétnicas compartidas.",
+            "Internationalist Communism": "Vinculado a Onorato Damen, Battaglia Comunista y la Tendencia Comunista Internacionalista de la izquierda italiana, rechaza la democracia burguesa, los sindicatos y el capitalismo de Estado soviético. A diferencia del bordiguismo estricto, rechaza el sustitucionismo de partido: el partido aporta claridad política mientras el poder reside en consejos obreros autónomos.",
+            "Camattism": "Desarrollado por el teórico francés Jacques Camatte y la revista Invariance, sostiene que el capital se ha autonomizado hasta 'domesticar' a la humanidad en una comunidad material artificial. Alcanzar la auténtica Gemeinwesen humana exige abandonar el productivismo industrial, el trabajo asalariado y todo aparato político.",
+            "Austromarxism": "Liderado por Karl Renner, Otto Bauer, Max Adler y Rudolf Hilferding en la Viena de inicios del siglo XX, buscó una vía propia entre el reformismo y el bolchevismo. Combina la socialización industrial y el bienestar municipal ('Viena Roja') con la autonomía nacional-cultural no territorial.",
+            "Bundism": "El movimiento socialista secular del Bund Obrero Judío, anclado en el principio de Doikayt ('ser de aquí'): luchar por el socialismo junto a los vecinos allí donde viven los trabajadores en lugar del separatismo territorial. Une sindicalismo combativo, autonomía cultural minoritaria y federalismo no territorial.",
+            "Bukharinism": "Asociado al teórico bolchevique Nikolái Bujarin y la Oposición de Derecha soviética, defendió preservar la Nueva Política Económica y la alianza obrero-campesina frente a la colectivización forzosa estalinista. Plantea transitar gradualmente al socialismo mediante cooperativas rurales, industrias clave estatales y crecimiento equilibrado.",
+            "Cyber-Councilism": "Una síntesis del comunismo de consejos germano-holandés con la planificación cibernética, las redes libres entre pares y la alta tecnología emancipadora. En lugar de una élite tecnocrática, consejos obreros revocables emplean computación distribuida en tiempo real para coordinar el tiempo de trabajo y los bienes comunes.",
+            "Biocosmism": "Inspirado en el anarco-biocosmismo soviético temprano (Aleksandr Sviatogor) junto con Nikolái Fiódorov y Aleksandr Bogdánov, fusiona la revolución social con la conquista científica de la muerte y el espacio. Sus lemas —inmortalismo e interplanetarismo— tratan el envejecimiento y la escasez como límites materiales a superar colectivamente.",
+            "Neozapatismo": "El socialismo libertario de raíz indígena practicado por el EZLN en Chiapas desde 1994 bajo el principio de Mandar Obedeciendo. Combinando la custodia comunal maya de la tierra, asambleas populares horizontales, Juntas de Buen Gobierno revocables y solidaridad alterglobalista, rechaza tomar el poder estatal.",
+            "Libre Socialism": "Una filosofía anticapitalista de los bienes comunes digitales inspirada en el movimiento del software libre y la producción colaborativa entre pares. Busca extender la cooperación abierta y sin propiedad exclusiva del conocimiento libre a la producción material, aboliendo las rentas de propiedad intelectual y los monopolios de plataformas.",
+            "Platformism": "Formulado en 1926 por exiliados ucranianos y rusos en torno a Néstor Majnó y Piotr Arshínov (Dielo Truda) y retomado por el especifismo latinoamericano, critica el anarquismo de síntesis informal. Propugna federaciones anarquistas cohesionadas por unidad teórica, unidad táctica y responsabilidad colectiva dentro de las luchas obreras de masas."
         },
         "ideologyGroups": {
             "Third Position": "Tercera posición",
@@ -4150,7 +4330,17 @@ const TRANSLATIONS = {
             "Situationism": "Situacionismo",
             "Autonomist Marxism": "Marxismo Autonomista",
             "Orthodox Marxism": "Marxismo Ortodoxo",
-            "Participatory Socialism": "Socialismo Participativo"
+            "Participatory Socialism": "Socialismo Participativo",
+            "Internationalist Communism": "Comunismo Internacionalista",
+            "Camattism": "Camattismo",
+            "Austromarxism": "Austromarxismo",
+            "Bundism": "Bundismo",
+            "Bukharinism": "Bujarinismo",
+            "Cyber-Councilism": "Ciberconsejismo",
+            "Biocosmism": "Biocosmismo",
+            "Neozapatismo": "Neozapatismo",
+            "Libre Socialism": "Socialismo Libre Digital",
+            "Platformism": "Plataformismo"
         }
     }
 };

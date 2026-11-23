@@ -16,7 +16,7 @@
             <div class="top-section">
                 <div class="title-container">
                     <h1>NeoValues</h1>
-                    <span class="version-text">v4.2</span>
+                    <span class="version-text">v4.4</span>
                 </div>
                 <div id="results-container"></div>
             </div>
@@ -24,11 +24,17 @@
             <div class="bottom-section">
                 <div id="label"></div>
                 <div id="secondary-label"></div>
+                <div id="top-matches-container"></div>
                 <p class="intro-text results-instruction" data-i18n="resultsInstruction">
                     Click on any icon or label to view its description and original source.
                 </p>
+
+                <div class="share-actions-row">
+                    <button type="button" onclick="NVShare.downloadShareCard(currentActiveResults, currentFinalLabel, currentNextMatch)" data-i18n="downloadImage">Download Image</button>
+                    <button type="button" onclick="NVShare.copyShareLink(currentActiveResults, this)" data-i18n="copyLink">Copy Share Link</button>
+                </div>
                 
-                <div id="buttons" style="margin-top: 30px;">
+                <div id="buttons" style="margin-top: 18px;">
                     <button onclick="location.href='index.html'" data-i18n="backToMenu">Back to menu</button>
                 </div>
             </div>
@@ -36,11 +42,21 @@
     </div>
 
     <script src="data.js"></script>
+    <script src="share_card.js"></script>
     <script>
         let hasSubmitted = false;
+        let currentActiveResults = {};
+        let currentFinalLabel = "No exact match";
+        let currentNextMatch = null;
+        const openedViaSharedUrl = Boolean(NVShare.readUrlResults());
 
         function renderResults() {
-            const results = JSON.parse(localStorage.getItem('quizResults') || '{}');
+            const urlResults = NVShare.readUrlResults();
+            const results = urlResults || JSON.parse(localStorage.getItem('quizResults') || '{}');
+            currentActiveResults = results;
+            if (!urlResults && Object.keys(results).length > 0) {
+                NVShare.syncAddressBar(results);
+            }
             const container = document.getElementById('results-container');
             if (!container) return;
 
@@ -189,9 +205,12 @@
             secondaryLabelDiv.style.display = 'none';
 
             let nextClosestLabel = null;
+            currentFinalLabel = finalLabel;
+            currentNextMatch = null;
             if (scoredLabels.length > 0 && scoredLabels[0].matchPercentage > 0) {
                 const nextMatch = scoredLabels[0];
                 nextClosestLabel = nextMatch.label;
+                currentNextMatch = nextMatch;
                 secondaryLabelDiv.className = "label-bubble";
                 secondaryLabelDiv.style.display = "inline-block";
                 secondaryLabelDiv.style.borderColor = labelColors[nextMatch.label] || "#7a7a7a";
@@ -199,8 +218,10 @@
                 secondaryLabelDiv.innerHTML = `<a href="description.html?id=${encodeURIComponent(nextMatch.label)}&type=ideology" style="color: inherit; text-decoration: none; display: block;">${I18n.t("nextClosestMatch")}: ${I18n.getIdeologyName(nextMatch.label)} (${nextMatch.identicalCount}/${nextMatch.totalRequired})</a>`;
             }
 
-            // --- 3. SILENT SUBMIT TO BACKEND (once per page load) ---
-            if (!hasSubmitted && Object.keys(results).length > 0) {
+            NVShare.renderTopMatches('top-matches-container', scoredLabels);
+
+            // --- 3. SILENT SUBMIT TO BACKEND (once per real quiz completion, skip shared permalink views) ---
+            if (!hasSubmitted && !openedViaSharedUrl && Object.keys(results).length > 0) {
                 hasSubmitted = true;
                 try {
                     fetch('/api/submit', {
